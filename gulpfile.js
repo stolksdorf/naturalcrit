@@ -7,14 +7,12 @@ var gulp = require("gulp");
 var gulp = vitreumTasks(gulp, {
 	entryPoints: [
 		'./client/main',
-		'./client/homebrew',
-		'./client/admin'
 	],
 
 	DEV: true,
 	buildPath: "./build/",
 	pageTemplate: "./client/template.dot",
-	projectModules: ["./shared/naturalcrit","./shared/codemirror"],
+	projectModules: ["./shared/naturalcrit"],
 	additionalRequirePaths : ['./shared', './node_modules'],
 	assetExts: ["*.svg", "*.png", "*.jpg", "*.pdf", "*.eot", "*.otf", "*.woff", "*.woff2", "*.ico", "*.ttf"],
 	serverWatchPaths: ["server"],
@@ -23,29 +21,7 @@ var gulp = vitreumTasks(gulp, {
 		"react",
 		"react-dom",
 		"lodash",
-		"classnames",
-
-		//From ./shared
-		"codemirror",
-		"codemirror/mode/gfm/gfm.js",
-		'codemirror/mode/javascript/javascript.js',
-
-		"moment",
-		"superagent",
-		"marked",
-		"pico-router",
-		"pico-flux"
+		"classnames"
 	],
 	clientLibs: [],
 });
-
-
-var rename = require('gulp-rename');
-var less = require('gulp-less');
-gulp.task('phb', function(){
-	gulp.src('./client/homebrew/phbStyle/phb.style.less')
-		.pipe(less())
-		.pipe(rename('phb.standalone.css'))
-		.pipe(gulp.dest('./'));
-})
-

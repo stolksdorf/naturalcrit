@@ -2,8 +2,6 @@ var React = require('react');
 var _ = require('lodash');
 var cx = require('classnames');
 
-var Router = require('pico-router');
-
 var NaturalCritIcon = require('naturalcrit/svg/naturalcrit.svg.jsx');
 var HomebrewIcon = require('naturalcrit/svg/homebrew.svg.jsx');
 
@@ -13,7 +11,7 @@ var Main = React.createClass({
 			tools : [
 				{
 					id : 'homebrew',
-					path : '/homebrew',
+					path : 'http://homebrewery.naturalcrit.com',
 					name : 'The Homebrewery',
 					icon : <HomebrewIcon />,
 					desc : 'Make authentic-looking 5e homebrews using Markdown',
@@ -31,16 +29,6 @@ var Main = React.createClass({
 					show : false,
 					beta : true
 				},
-				{
-					id : 'homebrewfg2',
-					path : '/homebrew',
-					name : 'The Homebrewery',
-					icon : <HomebrewIcon />,
-					desc : 'Make authentic-looking 5e homebrews using Markdown',
-
-					show : false,
-					beta : false
-				}
 
 			]
 		};
