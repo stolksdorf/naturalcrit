@@ -7,6 +7,13 @@ var express = require("express");
 var app = express();
 app.use(express.static(__dirname + '/build'));
 
+
+
+app.all('/homebrew*', (req, res) => {
+	return res.redirect(302, 'http://homebrewery.naturalcrit.com' + req.url.replace('/homebrew', ''));
+})
+
+
 app.get('*', function (req, res) {
 	vitreumRender({
 		page: './build/main/bundle.dot',
