@@ -6,7 +6,7 @@ var gulp = require("gulp");
 
 var gulp = vitreumTasks(gulp, {
 	entryPoints: [
-		'./client/main',
+		'./client/naturalcrit',
 	],
 
 	DEV: true,
@@ -21,7 +21,9 @@ var gulp = vitreumTasks(gulp, {
 		"react",
 		"react-dom",
 		"lodash",
-		"classnames"
+		"classnames",
+		"superagent",
+		"pico-router"
 	],
 	clientLibs: [],
 });
