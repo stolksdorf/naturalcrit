@@ -1,12 +1,14 @@
-var React = require('react');
-var _     = require('lodash');
-var cx    = require('classnames');
+const React = require('react');
+const _     = require('lodash');
+const cx    = require('classnames');
 
-var NaturalCritIcon = require('naturalcrit/svg/naturalcrit.svg.jsx');
-var HomebrewIcon = require('naturalcrit/svg/homebrew.svg.jsx');
+const NaturalCritIcon = require('naturalcrit/svg/naturalcrit.svg.jsx');
+
+const HomebrewIcon = require('naturalcrit/svg/homebrew.svg.jsx');
+const TPKIcon = require('naturalcrit/svg/tpk.svg.jsx');
 
 
-var HomePage = React.createClass({
+const HomePage = React.createClass({
 		getDefaultProps: function() {
 			return {
 				tools : [
@@ -23,8 +25,8 @@ var HomePage = React.createClass({
 					{
 						id : 'tpk',
 						path : 'http://tpk.naturalcrit.com',
-						name : 'Total PLayer Knoller',
-						icon : <HomebrewIcon />,
+						name : 'Total Player Knoller',
+						icon : <TPKIcon />,
 						desc : 'Effortless custom character sheets',
 
 						show : true,

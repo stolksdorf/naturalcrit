@@ -39,6 +39,7 @@
 			.fadeInDown(1s);
 			.keep();
 			display         : inline-block;
+			vertical-align  : top;
 			cursor          : pointer;
 			opacity         : 0;
 			color           : black;
@@ -70,7 +71,8 @@
 				}
 				svg{
 					.animateAll(0.5s);
-					height : 10em;
+					height        : 9em;
+					margin-bottom : 0.8em;
 				}
 			}
 			.content:hover{
@@ -78,28 +80,23 @@
 			}
 			//Beta styles
 			&.beta{
-				cursor : initial;
+				overflow : hidden;
+				cursor   : initial;
 				.content{
-					&:hover{
-						svg, h2{
-							.transform(scale(1.0));
-						}
-					}
-					svg, h2{
-						opacity : 0.3;
-					}
 					&:after{
 						.animateAll();
+						.transform(rotate(45deg));
 						content          : "beta!";
 						position         : absolute;
 						display          : block;
-						top              : 120px;
-						left             : 0px;
-						width            : 100%;
-						padding          : 10px 0px;
+						top              : -12px;
+						right            : -46px;
+						width            : 36%;
+						padding-top      : 27px;
+						padding-bottom   : 15px;
 						//opacity          : 0;
 						background-color : fade(@grey, 50%);
-						font-size        : 2em;
+						font-size        : 1em;
 						font-weight      : 800;
 						text-align       : center;
 						text-transform   : uppercase;
