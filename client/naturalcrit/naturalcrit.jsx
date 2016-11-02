@@ -13,6 +13,7 @@ let Router;
 const Naturalcrit = React.createClass({
 	getDefaultProps: function() {
 		return {
+			user : {},
 			url : ''
 		};
 	},
@@ -33,6 +34,7 @@ const Naturalcrit = React.createClass({
 		});
 	},
 	render : function(){
+		console.log(this.props);
 		return <div className='naturalcrit'>
 			<Router initialUrl={this.props.url}/>
 		</div>

@@ -53,6 +53,41 @@ const LoginPage = React.createClass({
 					return;
 				}
 
+
+				console.log('making cookie');
+
+				document.cookie = "session="+res.body+"; path=/";
+
+
+				this.setState({
+					processing : false,
+					errors : null,
+					success : true
+				}, ()=> {
+					if(this.props.redirect) window.location = this.props.redirect;
+				})
+			});
+	},
+
+	signup : function(){
+		this.setState({
+			processing : true,
+			errors: null
+		});
+		request.post('/signup')
+			.send({
+				user : this.state.username,
+				pass : this.state.password,
+			})
+			.end((err, res) => {
+				this.setState({processing : false });
+				if(err){
+					console.log('EROR', err);
+					return;
+				}
+
+				console.log(res);
+
 				this.setState({
 					processing : false,
 					errors : null,
@@ -73,6 +108,9 @@ const LoginPage = React.createClass({
 		return <div> success</div>
 	},
 
+	//Add detection for being logged in
+	//Add a lil logout button
+
 	render : function(){
 		return <div className='loginPage'>
 			<div className='content'>
@@ -86,6 +124,7 @@ const LoginPage = React.createClass({
 				<input type='text' onChange={this.handlePassChange} value={this.state.password} />
 
 				<button onClick={this.handleLoginClick}>login</button>
+				<button onClick={this.signup}>signup</button>
 
 				{this.renderProcessing()}
 				{this.renderSuccess()}

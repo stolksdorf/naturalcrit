@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 const _ = require('lodash');
 
+const jwt = require('jwt-simple');
 const bcrypt = require('bcrypt-nodejs');
+
 const SALT_WORK_FACTOR = 10;
+const SECRET = 'secret';
 
 const AccountSchema = mongoose.Schema({
 	username: { type: String, required: true, index: { unique: true } },
@@ -13,23 +16,44 @@ const AccountSchema = mongoose.Schema({
 
 AccountSchema.pre('save', function(next) {
 	const account = this;
-
-	// only hash the password if it has been modified (or is new)
 	if (!account.isModified('password')) return next();
 
-	// generate a salt
-	bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-		if (err) return next(err);
-		// hash the password along with our new salt
-		bcrypt.hash(account.password, salt, function(err, hash) {
-			if (err) return next(err);
-			account.password = hash;
-			next();
-		});
-	});
+	const salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);
+	const hash = bcrypt.hashSync(account.password, salt);
+
+	if(!hash) return next({ok : false, msg : 'err making password hash'});
+	account.password = hash;
+	return next();
 });
 
-AccountSchema.methods.checkPassword = (candidatePassword) => {
+AccountSchema.statics.login = function(username, pass){
+	return new Promise((resolve, reject) => {
+		Account.find({username : username}, (err, users) => {
+			if(err) return reject(err);
+			if(!users || users.length == 0) return reject({ ok : false, msg : 'no User'});
+
+			const user = users[0];
+			user.checkPassword(pass)
+				.then((isMatch) => {
+					if(!isMatch) return reject({ok : false, msg : 'Bad pass'});
+					return resolve(user.getJWT());
+				})
+				.catch(reject)
+		});
+	});
+}
+
+AccountSchema.statics.signup = function(username, pass){
+	return new Promise((resolve, reject) => {
+		//try to find existing user, fail if found
+		//create new entry
+		//getJWT for new entry
+		//return it
+	});
+};
+
+
+AccountSchema.methods.checkPassword = function(candidatePassword) {
 	return new Promise((resolve, reject) => {
 		bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
 			if (err) return reject(err);
@@ -38,11 +62,14 @@ AccountSchema.methods.checkPassword = (candidatePassword) => {
 	});
 };
 
-AccountSchema.methods.getJWT = () => {
-	return new Promise((resolve, reject) => {
+AccountSchema.methods.getJWT = function(){
+	const payload = this.toJSON();
+	payload.issued = (new Date());
 
+	delete payload.password;
+	delete payload._id;
 
-	});
+	return jwt.encode(payload, SECRET);
 };
 
 
