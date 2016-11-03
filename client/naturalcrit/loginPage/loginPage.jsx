@@ -56,7 +56,7 @@ const LoginPage = React.createClass({
 
 				console.log('making cookie');
 
-				document.cookie = "session="+res.body+"; path=/";
+				document.cookie = "session="+res.body+"; path=/; domain=local.naturalcrit.com";
 
 
 				this.setState({
