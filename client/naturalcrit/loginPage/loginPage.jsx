@@ -9,7 +9,8 @@ const AccountActions = require('./account.actions.js');
 const LoginPage = React.createClass({
 	getDefaultProps: function() {
 		return {
-			redirect : ''
+			redirect : '',
+			user : null
 		};
 	},
 
@@ -26,8 +27,6 @@ const LoginPage = React.createClass({
 
 			errors : null,
 			success : false,
-
-
 		};
 	},
 
@@ -43,7 +42,6 @@ const LoginPage = React.createClass({
 	handleLoginClick : function(){
 		this.login();
 	},
-
 	redirect : function(){
 		if(!this.props.redirect) return;
 		this.setState({
@@ -101,12 +99,14 @@ const LoginPage = React.createClass({
 	},
 
 	checkUsername : _.debounce(function(){
-		console.log('checking');
+		this.setState({
+			checkingUsername : true
+		});
 		AccountActions.checkUsername(this.state.username)
 			.then((doesExist) => {
-				console.log(doesExist);
 				this.setState({
-					usernameExists : doesExist
+					usernameExists : doesExist,
+					checkingUsername : false
 				});
 			})
 	}, 1000),
@@ -119,6 +119,18 @@ const LoginPage = React.createClass({
 	renderSuccess : function(){
 		if(!this.state.success) return;
 		return <div> success</div>
+	},
+
+	renderLoggedIn : function(){
+		if(!this.props.user) return;
+
+		return <div className='loggedin'>
+			You are logged in as {this.props.user.username}
+
+			<button onClick={this.logout}>logout</button>
+
+		</div>
+
 	},
 
 	//Add detection for being logged in
@@ -138,10 +150,12 @@ const LoginPage = React.createClass({
 
 				<button onClick={this.handleLoginClick}>login</button>
 				<button onClick={this.signup}>signup</button>
-				<button onClick={this.logout}>logout</button>
+
 
 				{this.renderProcessing()}
 				{this.renderSuccess()}
+
+				{this.renderLoggedIn()}
 
 			</div>
 		</div>

@@ -21,20 +21,16 @@ const Naturalcrit = React.createClass({
 	componentWillMount: function() {
 		Router = CreateRouter({
 			'/login' : (args, query) => {
-				return <LoginPage redirect={query.redirect} />
+				return <LoginPage
+					redirect={query.redirect}
+					user={this.props.user} />
 			},
-			'/signup' : (args, query) => {
-				return <SignupPage redirect={query.redirect} />
-			},
-
 			'*' : () => {
 				return <HomePage />
 			}
-
 		});
 	},
 	render : function(){
-		console.log(this.props);
 		return <div className='naturalcrit'>
 			<Router initialUrl={this.props.url}/>
 		</div>
