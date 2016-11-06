@@ -1,7 +1,9 @@
 const React = require('react');
 const _     = require('lodash');
 const cx    = require('classnames');
-const request = require('superagent');
+
+
+const AccountActions = require('./account.actions.js');
 
 
 const LoginPage = React.createClass({
@@ -17,86 +19,97 @@ const LoginPage = React.createClass({
 			password : '',
 
 			processing : false,
+			checkingUsername : false,
+			redirecting : false,
+
+			usernameExists : false,
+
 			errors : null,
-			success : false
+			success : false,
+
+
 		};
 	},
 
 	handleUserChange : function(e){
 		this.setState({
+			usernameExists : true,
 			username : e.target.value
-		});
+		}, this.checkUsername);
 	},
 	handlePassChange : function(e){
-		this.setState({
-			password : e.target.value
-		});
+		this.setState({ password : e.target.value });
 	},
 	handleLoginClick : function(){
 		this.login();
 	},
 
+	redirect : function(){
+		if(!this.props.redirect) return;
+		this.setState({
+			redirecting : true
+		}, () => {window.location = this.props.redirect;});
+	},
+
+
 	login : function(){
 		this.setState({
 			processing : true,
-			errors: null
+			errors     : null
 		});
-		request.post('/login')
-			.send({
-				user : this.state.username,
-				pass : this.state.password,
-			})
-			.end((err, res) => {
-				this.setState({processing : false });
-				if(err){
-					console.log('EROR', err);
-					return;
-				}
-
-
-				console.log('making cookie');
-
-				document.cookie = "session="+res.body+"; path=/; domain=local.naturalcrit.com";
-
-
+		AccountActions.login(this.state.username, this.state.password)
+			.then((token) => {
 				this.setState({
 					processing : false,
 					errors : null,
 					success : true
-				}, ()=> {
-					if(this.props.redirect) window.location = this.props.redirect;
-				})
+				}, this.redirect);
+			})
+			.catch((err) => {
+				console.log(err);
+				this.setState({
+					processing : false,
+					errors : err
+				});
 			});
+	},
+	logout : function(){
+		AccountActions.removeSession();
+		window.location.reload();
 	},
 
 	signup : function(){
 		this.setState({
 			processing : true,
-			errors: null
+			errors     : null
 		});
-		request.post('/signup')
-			.send({
-				user : this.state.username,
-				pass : this.state.password,
-			})
-			.end((err, res) => {
-				this.setState({processing : false });
-				if(err){
-					console.log('EROR', err);
-					return;
-				}
-
-				console.log(res);
-
+		AccountActions.signup(this.state.username, this.state.password)
+			.then((token) => {
 				this.setState({
 					processing : false,
 					errors : null,
 					success : true
-				}, ()=> {
-					if(this.props.redirect) window.location = this.props.redirect;
-				})
+				}, this.redirect);
+			})
+			.catch((err) => {
+				console.log(err);
+				this.setState({
+					processing : false,
+					errors : err
+				});
 			});
 	},
+
+	checkUsername : _.debounce(function(){
+		console.log('checking');
+		AccountActions.checkUsername(this.state.username)
+			.then((doesExist) => {
+				console.log(doesExist);
+				this.setState({
+					usernameExists : doesExist
+				});
+			})
+	}, 1000),
 
 	renderProcessing : function(){
 		if(!this.state.processing) return;
@@ -125,6 +138,7 @@ const LoginPage = React.createClass({
 
 				<button onClick={this.handleLoginClick}>login</button>
 				<button onClick={this.signup}>signup</button>
+				<button onClick={this.logout}>logout</button>
 
 				{this.renderProcessing()}
 				{this.renderSuccess()}

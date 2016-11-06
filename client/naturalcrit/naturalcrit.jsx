@@ -13,7 +13,7 @@ let Router;
 const Naturalcrit = React.createClass({
 	getDefaultProps: function() {
 		return {
-			user : {},
+			user : null,
 			url : ''
 		};
 	},

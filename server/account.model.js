@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 const _ = require('lodash');
+const config = require('nconf');
 
 const jwt = require('jwt-simple');
 const bcrypt = require('bcrypt-nodejs');
 
 const SALT_WORK_FACTOR = 10;
-const SECRET = 'secret';
 
 const AccountSchema = mongoose.Schema({
 	username: { type: String, required: true, index: { unique: true } },
@@ -27,31 +27,60 @@ AccountSchema.pre('save', function(next) {
 });
 
 AccountSchema.statics.login = function(username, pass){
-	return new Promise((resolve, reject) => {
-		Account.find({username : username}, (err, users) => {
-			if(err) return reject(err);
-			if(!users || users.length == 0) return reject({ ok : false, msg : 'no User'});
+	const BadLogin = { ok : false, msg : 'Invalid username and password combination.', status : 401};
 
-			const user = users[0];
-			user.checkPassword(pass)
-				.then((isMatch) => {
-					if(!isMatch) return reject({ok : false, msg : 'Bad pass'});
-					return resolve(user.getJWT());
-				})
-				.catch(reject)
-		});
-	});
-}
+	let user;
+	return Account.getUser(username)
+		.then((_user) => {
+			if(!_user) throw BadLogin;
+			user = _user;
+		})
+		.then(() => {
+			return user.checkPassword(pass)
+		})
+		.then((isMatch) => {
+			if(!isMatch) throw BadLogin;
+			return user.getJWT();
+		})
+};
+
 
 AccountSchema.statics.signup = function(username, pass){
+	return Account.getUser(username, pass)
+		.then((user) => {
+			if(user) throw {ok : false, msg : 'User with that name already exists', status : 400};
+		})
+		.then(() => {
+			return Account.makeUser(username, pass);
+		})
+		.then((newUser) => {
+			return newUser.getJWT();
+		});
+};
+
+
+AccountSchema.statics.makeUser = function(username, password){
 	return new Promise((resolve, reject) => {
-		//try to find existing user, fail if found
-		//create new entry
-		//getJWT for new entry
-		//return it
+		const newAccount = new Account({ username, password });
+		newAccount.save((err, obj) => {
+			if(err){
+				console.log(err);
+				return reject({ok : false, msg : 'Issue creating new account'});
+			}
+			return resolve(newAccount);
+		});
 	});
 };
 
+AccountSchema.statics.getUser = function(username){
+	return new Promise((resolve, reject) => {
+		Account.find({username : username}, (err, users) => {
+			if(err) return reject(err);
+			if(!users || users.length == 0) return resolve(false);
+			return resolve(users[0]);
+		})
+	});
+};
 
 AccountSchema.methods.checkPassword = function(candidatePassword) {
 	return new Promise((resolve, reject) => {
@@ -69,7 +98,7 @@ AccountSchema.methods.getJWT = function(){
 	delete payload.password;
 	delete payload._id;
 
-	return jwt.encode(payload, SECRET);
+	return jwt.encode(payload, config.get('secret'));
 };
 
 
