@@ -29,7 +29,7 @@ const HomePage = React.createClass({
 						icon : <TPKIcon />,
 						desc : 'Effortless custom character sheets',
 
-						show : true,
+						show : false,
 						beta : true
 					},
 
