@@ -1,4 +1,31 @@
 @import 'naturalcrit/styles/core.less';
-.naturalcrit{
 
+
+*{
+	box-sizing: border-box;
+}
+
+.logo{
+	font-size : 4em;
+	color     : black;
+	svg{
+		height       : .9em;
+		margin-right : .2em;
+		cursor       : pointer;
+		fill         : black;
+	}
+	.name{
+		font-family : 'CodeLight';
+		.crit{
+			font-family : 'CodeBold';
+		}
+	}
+}
+
+.fa.red{
+	color : @red;
+}
+
+.fa.green{
+	color : @green;
 }

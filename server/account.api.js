@@ -35,6 +35,9 @@ router.post('/signup', (req, res) => {
 });
 
 router.get('/user_exists/:username', (req, res) => {
+	if(!req.params.username) {
+		return res.json(false);
+	}
 	AccountModel.getUser(req.params.username)
 		.then((user) => {
 			return res.json(!!user);
@@ -47,8 +50,6 @@ router.get('/user_exists/:username', (req, res) => {
 
 router.use((req, res, next) => {
 	if(req.cookies && req.cookies.nc_session){
-		console.log('session!');
-		console.log(jwt.decode(req.cookies.nc_session, config.get('secret')));
 		req.user = jwt.decode(req.cookies.nc_session, config.get('secret'));
 	}
 	return next();

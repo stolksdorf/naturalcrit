@@ -1,4 +1,5 @@
 {
 	"host" : "local.naturalcrit.com:8010",
+	"domain" : ".local.naturalcrit.com",
 	"secret" : "secret"
 }

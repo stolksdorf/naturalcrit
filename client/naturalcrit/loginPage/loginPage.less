@@ -1,3 +1,111 @@
-.loginPage{
 
+.loginPage{
+	text-align : center;
+	padding-top: 30px;
+	.content{
+
+		width   : 400px;
+		margin  : 0 auto;
+		padding : 20px;
+		padding-top: 50px;
+		.switchView{
+			width : 100%;
+			&>div{
+				.animate(background-color);
+				display          : inline-block;
+				width            : 50%;
+				padding          : 10px;
+				cursor           : pointer;
+				background-color : transparent;
+				font-size        : 0.8em;
+				font-weight      : 800;
+				text-transform   : uppercase;
+				i{
+					vertical-align : middle;
+					font-size      : 2em;
+				}
+			}
+			.login:hover, .login.selected{
+				background-color : fade(@blue, 20%);
+			}
+			.signup:hover, .signup.selected{
+				background-color : fade(@green, 20%);
+			}
+		}
+		.field{
+			position   : relative;
+			margin     : 20px 0px;
+			text-align : left;
+			label{
+				display        : block;
+				width          : 100%;
+				font-size      : 0.6em;
+				font-weight    : 800;
+				line-height    : 1.1em;
+				text-transform : uppercase;
+			}
+			input{
+				width     : 100%;
+				padding   : 10px;
+				font-size : 1.2em;
+				color     : #333;
+			}
+			.control{
+				position   : absolute;
+				display    : block;
+				right      : -40px;
+				bottom     : 0px;
+				height     : 46px;
+				width      : 40px;
+				text-align : center;
+				i{
+					margin-top : 15px;
+				}
+			}
+			&.password .control{
+				cursor : pointer;
+			}
+			.userExists{
+				font-size: 0.6em;
+				position: absolute;
+				right : 0px;
+				color : @red;
+			}
+		}
+		button.action{
+			.animate(opacity);
+			padding        : 10px 20px;
+			cursor         : pointer;
+			opacity        : 0.8;
+			font-size      : 0.8em;
+			font-weight    : 800;
+			color          : black;
+			text-transform : uppercase;
+			border         : none;
+			outline        : none;
+			&:hover{
+				opacity : 1;
+			}
+			&:disabled{
+				cursor           : not-allowed;
+				opacity          : 0.3;
+				background-color : #ddd;
+			}
+			&.login{ background-color: @blue; }
+			&.signup{ background-color: @green; }
+			i{
+				margin-right : 10px;
+				font-size    : 1.5em;
+			}
+		}
+		.errors{
+			margin-bottom : 20px;
+			color         : @red;
+		}
+	}
+	.loggedin{
+		margin-top : 60px;
+		font-size  : 0.8em;
+		font-style : italic;
+	}
 }

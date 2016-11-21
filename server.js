@@ -41,6 +41,7 @@ app.get('*', (req, res) => {
 	vitreumRender({
 		page: './build/naturalcrit/bundle.dot',
 		globals:{
+			domain : config.get('domain')
 		},
 		prerenderWith : './client/naturalcrit/naturalcrit.jsx',
 		initialProps: {
