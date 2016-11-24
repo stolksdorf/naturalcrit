@@ -50,7 +50,11 @@ router.get('/user_exists/:username', (req, res) => {
 
 router.use((req, res, next) => {
 	if(req.cookies && req.cookies.nc_session){
-		req.user = jwt.decode(req.cookies.nc_session, config.get('secret'));
+		try{
+			req.user = jwt.decode(req.cookies.nc_session, config.get('secret'));
+		}catch(e){
+
+		}
 	}
 	return next();
 });
