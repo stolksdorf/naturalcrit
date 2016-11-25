@@ -234,7 +234,6 @@ const LoginPage = React.createClass({
 					<label>username</label>
 					<input
 						type='text'
-						placeholder='coolguy'
 						onChange={this.handleUserChange}
 						value={this.state.username} />
 					{this.renderUsernameValidation()}
