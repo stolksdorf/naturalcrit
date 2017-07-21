@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 require('app-module-path').addPath('./shared');
-const vitreumRender = require('vitreum/render');
+
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const express = require("express");
@@ -28,30 +28,30 @@ require('mongoose')
 app.use(require('./server/account.api.js'));
 
 
-
 //Homebrew Reidrect
 app.all('/homebrew*', (req, res) => {
 	return res.redirect(302, 'http://homebrewery.naturalcrit.com' + req.url.replace('/homebrew', ''));
 });
 
 
+const render = require('vitreum/steps/render');
+const templateFn = require('./client/template.js');
 
-//Render Page
+app.get('/badges', (req, res)=>{
+	render('badges', templateFn, { url : req.url })
+		.then((page) => res.send(page))
+		.catch((err) => console.log(err));
+})
+
+//Render Main Page
 app.get('*', (req, res) => {
-	vitreumRender({
-		page: './build/naturalcrit/bundle.dot',
-		globals:{
-			domain : config.get('domain')
-		},
-		prerenderWith : './client/naturalcrit/naturalcrit.jsx',
-		initialProps: {
+	render('main', templateFn, {
+			url : req.url,
 			user : req.user,
-			url  : req.originalUrl,
-		},
-		clearRequireCache : !process.env.PRODUCTION,
-	}, (err, page) => {
-		return res.send(page)
-	});
+			domain : config.get('domain')
+		})
+		.then((page) => res.send(page))
+		.catch((err) => console.log(err));
 });
 
 
