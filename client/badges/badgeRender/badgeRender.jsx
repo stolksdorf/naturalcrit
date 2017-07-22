@@ -2,10 +2,9 @@ const React = require('react');
 const _  = require('lodash');
 const createClass = require('create-react-class');
 
-function shadeColor2(color, percent) {
-    var f=parseInt(color.slice(1),16),t=percent<0?0:255,p=percent<0?percent*-1:percent,R=f>>16,G=f>>8&0x00FF,B=f&0x0000FF;
-    return "#"+(0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B)).toString(16).slice(1);
-}
+const BadgeTemplate = require('./badgeTemplate.js');
+
+const replaceAll = (text, target, str)=>text.replace(new RegExp(target, 'g'), str);
 
 const BadgeRender = createClass({
 	getDefaultProps: function() {
@@ -23,7 +22,7 @@ const BadgeRender = createClass({
 		const reader = new FileReader();
 		reader.onload = (e)=>{
 			//viewBox="0 0 100 125" -> viewBox="0 0 100 100"
-			//replace all <path with <path fill="COLOR"
+			//replace all <path with <path style="fill:COLOR"
 			this.rawSVG = e.target.result;
 			this.drawBadge(this.props);
 		}
@@ -40,30 +39,57 @@ const BadgeRender = createClass({
 
 	componentDidMount: function() {
 		this.ctx = this.refs.canvas.getContext('2d');
-		this.drawBadge(this.props)
+		this.drawBadge(this.props);
+		setTimeout(()=>this.drawBadge(this.props), 500)
 	},
 
-	drawFrame : function(){
-
+	clearCanvas : function(){
+		this.ctx.clearRect(0, 0, this.refs.canvas.width, this.refs.canvas.height);
 	},
-	drawIconSVG : function(){
-		const icon = new Image();
-		icon.src = `data:image/svg+xml;base64,${btoa(this.rawSVG)}`;
-		icon.onload = ()=>this.ctx.drawImage(icon, 0, 0);
 
+	readyFrame : function(color){
+		return new Promise((resolve, reject)=>{
+			const frame = new Image();
+			frame.src = `data:image/svg+xml;base64,${btoa(BadgeTemplate(color))}`;
+			frame.onload = ()=>resolve(frame);
+		});
+	},
+	readyIconSVG : function(color){
+		return new Promise((resolve, reject)=>{
+			if(!this.rawSVG) return resolve();
+			const icon = new Image();
+			const svg = _.reduce(['path', 'rect', 'polygon'], (acc, type)=>{
+				return replaceAll(acc, `<${type}`, `<${type} style="fill:${color}"`);
+			}, this.rawSVG);
+			icon.src = `data:image/svg+xml;base64,${btoa(svg)}`;
+			icon.onload = ()=>resolve(icon);
+		});
+	},
+	drawSVG : function(props){
+		return Promise.all([this.readyFrame(props.color), this.readyIconSVG(props.color)])
+			.then(([frame, icon])=>{
+				this.clearCanvas();
+				if(frame) this.ctx.drawImage(frame, 0, 0);
+				if(icon){
+					console.log(icon.width, icon.height);
+					this.ctx.drawImage(icon, 0, 0);
+				}
+			})
 	},
 	drawTitle : function(title){
 		this.ctx.textAlign='center';
-		this.ctx.font='30px Arial';
-		this.ctx.fillText(title,150,120);
+		this.ctx.font='30px Calluna';
+		this.ctx.fillStyle = "#ffffff";
+		this.ctx.fillText(title,150,230);
 	},
 
 	drawBadge : function(props){
-		this.ctx.clearRect(0, 0, this.refs.canvas.width, this.refs.canvas.height);
-		//clear canvas
-		//draw template, with modded color
-		this.drawTitle(props.text);
-		this.drawIconSVG();
+		this.drawSVG(props)
+			.then(()=>{
+				this.drawTitle(props.text);
+			})
+
+
 
 		//draw text
 		//draw icon, with modded color

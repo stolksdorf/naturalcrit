@@ -12,6 +12,7 @@
 		"classnames",
 		"superagent",
 		"pico-router",
-		"create-react-class"
+		"create-react-class",
+		"react-color"
 	]
 }
