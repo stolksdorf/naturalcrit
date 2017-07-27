@@ -1,3 +1,28 @@
-.badges{
 
+@import "shared/naturalcrit/styles/core.less";
+.badges{
+	width  : 800px;
+	margin : auto;
+	h1{
+		font-family: 'Calluna';
+		font-weight: 800;
+		font-size: 2.5em;
+		text-align: center;
+		padding-top: 30px;
+		margin-bottom: 10px;
+	}
+	&>p{
+		text-align: center;
+		margin-bottom: 20px;
+		font-size: 0.8em;
+		font-family: 'Calluna';
+	}
+	.content{
+		display         : flex;
+		padding-top     : 50px;
+		justify-content : space-around;
+		.badgeRender, .controls{
+			padding : 0px 50px;
+		}
+	}
 }

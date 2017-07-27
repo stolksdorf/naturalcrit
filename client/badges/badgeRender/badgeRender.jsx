@@ -11,24 +11,10 @@ const BadgeRender = createClass({
 		return {
 			title: '',
 			text: '',
-			iconPath : '',
+			rawSVG : '',
 			color : '#333'
 		};
 	},
-	rawSVG : '',
-	handleDrop: function(e){
-		e.preventDefault();
-		const files = e.target.files || e.dataTransfer.files;
-		const reader = new FileReader();
-		reader.onload = (e)=>{
-			//viewBox="0 0 100 125" -> viewBox="0 0 100 100"
-			//replace all <path with <path style="fill:COLOR"
-			this.rawSVG = e.target.result;
-			this.drawBadge(this.props);
-		}
-		reader.readAsText(files[0]);
-	},
-
 	componentWillReceiveProps: function(nextProps) {
 		this.drawBadge(nextProps);
 	},
@@ -40,7 +26,15 @@ const BadgeRender = createClass({
 	componentDidMount: function() {
 		this.ctx = this.refs.canvas.getContext('2d');
 		this.drawBadge(this.props);
-		setTimeout(()=>this.drawBadge(this.props), 500)
+	},
+
+	handleDownload : function(){
+
+		const target = document.createElement('a');
+		const name = (this.props.title ? _.snakeCase(this.props.title) : 'badge')
+		target.download = `${name}.png`;
+		target.href = this.refs.canvas.toDataURL("image/png").replace(/^data:image\/[^;]/, 'data:application/octet-stream');
+		target.click();
 	},
 
 	clearCanvas : function(){
@@ -54,55 +48,86 @@ const BadgeRender = createClass({
 			frame.onload = ()=>resolve(frame);
 		});
 	},
-	readyIconSVG : function(color){
+	readyIconSVG : function(props){
 		return new Promise((resolve, reject)=>{
-			if(!this.rawSVG) return resolve();
+			if(!props.rawSVG) return resolve();
 			const icon = new Image();
-			const svg = _.reduce(['path', 'rect', 'polygon'], (acc, type)=>{
-				return replaceAll(acc, `<${type}`, `<${type} style="fill:${color}"`);
-			}, this.rawSVG);
-			icon.src = `data:image/svg+xml;base64,${btoa(svg)}`;
+			let svg = _.reduce(['path', 'rect', 'polygon'], (acc, type)=>{
+				return replaceAll(acc, `<${type}`, `<${type} style="fill:${props.color}"`);
+			}, props.rawSVG);
+			//TODO: Remove all text nodes?
+			svg = svg.replace(/<text.*<\/text>/, '');
 			icon.onload = ()=>resolve(icon);
+			icon.src = `data:image/svg+xml;base64,${btoa(svg)}`;
 		});
 	},
 	drawSVG : function(props){
-		return Promise.all([this.readyFrame(props.color), this.readyIconSVG(props.color)])
+		return Promise.all([this.readyFrame(props.color), this.readyIconSVG(props)])
 			.then(([frame, icon])=>{
 				this.clearCanvas();
 				if(frame) this.ctx.drawImage(frame, 0, 0);
 				if(icon){
-					console.log(icon.width, icon.height);
-					this.ctx.drawImage(icon, 0, 0);
+					const scale = 1.1
+					const newWidth = icon.width * scale;
+					const newHeight = icon.height * scale;
+					this.ctx.drawImage(icon,
+						150 - newWidth / 2, 120 - newWidth / 2,
+						newWidth, newHeight);
 				}
 			})
 	},
 	drawTitle : function(title){
 		this.ctx.textAlign='center';
-		this.ctx.font='30px Calluna';
+		this.ctx.textBaseline="middle";
 		this.ctx.fillStyle = "#ffffff";
-		this.ctx.fillText(title,150,230);
+
+		const trySize = (font)=>{
+			this.ctx.font=`${font}px Calluna`;
+			const length = this.ctx.measureText(title).width;
+			if(length >= 230) return trySize(font-1);
+			return font;
+		};
+		const finalSize = trySize(35);
+		this.ctx.fillText(title,150,220);
+	},
+	drawText : function(text){
+		this.ctx.textAlign='left';
+		this.ctx.font='bold 18px Calluna';
+		this.ctx.fillStyle = "#000";
+
+		const lines = _.reduce(text.split(' '), (acc, word)=>{
+			const currLine = _.last(acc);
+			const length = this.ctx.measureText(`${currLine.join(' ')} ${word}`).width;
+			if(length >= this.refs.canvas.width - 30){
+				acc.push([word]);
+			}else{
+				currLine.push(word);
+			}
+			return acc;
+		}, [[]]);
+		_.each(lines, (line, index)=>{
+			this.ctx.fillText(line.join(' '),15,330 + index*20);
+		});
 	},
 
 	drawBadge : function(props){
+		let height = (props.text ? 400 : 300);
+		if(this.refs.canvas.height != height) this.refs.canvas.height = height;
 		this.drawSVG(props)
 			.then(()=>{
-				this.drawTitle(props.text);
+				this.drawTitle(props.title);
+				this.drawText(props.text);
 			})
-
-
-
-		//draw text
-		//draw icon, with modded color
-
-
-
 	},
 
 	render: function(){
 		return <div className='badgeRender'>
-			<div onDragOver={(e)=>e.preventDefault()} onDrop={this.handleDrop}>
-				<canvas ref='canvas' width={300} height={300}/>
-				<img ref='test' />
+			<canvas ref='canvas' width={300} height={300}/>
+			<div>
+				<button onClick={this.handleDownload}>
+					<i className='fa fa-download' />
+					Download
+				</button>
 			</div>
 		</div>
 	}

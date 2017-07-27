@@ -5,8 +5,7 @@ const createClass = require('create-react-class');
 const BadgeRender = require('./badgeRender/badgeRender.jsx');
 const Controls = require('./controls/controls.jsx');
 
-const Color = require('react-color');
-
+const NCLogo = require('naturalcrit/svg/naturalcrit.svg.jsx');
 
 const Badges = createClass({
 	getDefaultProps: function() {
@@ -18,35 +17,21 @@ const Badges = createClass({
 		return {
 			title: '',
 			text: '',
-			iconPath : 'https://thenounproject.com/browse/?i=1072583',
-			color : '#2b4486'
+			color : '#2b4486',
+			rawSVG : ``
 		};
 	},
 
-	handleChange : function(e){
-		console.log('hc', e.target.value);
-		this.setState({
-			text : e.target.value
-		})
-	},
-	handleColorChange : function(colorObj){
-		this.setState({
-			color : colorObj.hex
-		});
-	},
-
 	render: function(){
-		console.log(this.state.color);
 		return <div className='badges'>
-			<BadgeRender {...this.state} />
 
-			<Color.ChromePicker
-				disableAlpha={true}
-				color={ this.state.color }
-				onChangeComplete={ this.handleColorChange }
-			/>
+			<h1>D&D Achivement Badges</h1>
+			<p>Want to give your players a little something extra? Create a custom achivement badge just for them!</p>
+			<div className='content'>
+				<Controls data={this.state} onChange={(newState)=>this.setState(newState)} />
+				<BadgeRender {...this.state} />
 
-			<input type='text' value={this.state.text} onChange={this.handleChange} />
+			</div>
 		</div>
 	}
 });
