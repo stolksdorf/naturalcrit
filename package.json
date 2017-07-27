@@ -7,7 +7,7 @@
     "build": "node scripts/build.js",
     "prod": "set NODE_ENV=production&& npm run build",
     "postinstall": "npm run build",
-    "start": "node server/server.js"
+    "start": "node server.js"
   },
   "engines": {
     "node": ">=6.2.0"
