@@ -14,11 +14,14 @@ const Naturalcrit = React.createClass({
 	getDefaultProps: function() {
 		return {
 			user : null,
-			url : ''
+			url : '',
+			domain : ''
 		};
 	},
 
 	componentWillMount: function() {
+		global.domain = this.props.domain;
+
 		Router = CreateRouter({
 			'/login' : (args, query) => {
 				return <LoginPage

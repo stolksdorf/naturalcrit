@@ -1,0 +1,33 @@
+
+@font-face {
+	font-family : Calluna;
+	font-style  : normal;
+	font-weight : normal;
+	src         : url('/assets/badges/badgeRender/calluna.woff2') format('woff2'),
+	url('/assets/badges/badgeRender/calluna.woff') format('woff');
+}
+.badgeRender{
+	text-align : center;
+	canvas{
+		border : 1px solid #999;
+	}
+	button{
+		.animate(background-color);
+		margin           : 10px auto;
+		padding          : 5px 20px;
+		cursor           : pointer;
+		background-color : @green;
+		font-size        : 0.8em;
+		color            : white;
+		border           : none;
+		highlight        : none;
+		i{
+			vertical-align : middle;
+			margin-right   : 8px;
+			font-size      : 2em;
+		}
+		&:hover{
+			background-color : darken(@green, 10%);
+		}
+	}
+}

@@ -1,10 +1,13 @@
 {
   "name": "naturalcrit",
   "description": "Top-tier Tools for the discerning DM",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "scripts": {
-    "postinstall": "gulp prod",
-    "start": "node server.js"
+    "dev": "node scripts/dev.js",
+    "build": "node scripts/build.js",
+    "prod": "set NODE_ENV=production&& npm run build",
+    "postinstall": "npm run build",
+    "start": "node server/server.js"
   },
   "engines": {
     "node": ">=6.2.0"
@@ -18,15 +21,15 @@
     "classnames": "^2.2.0",
     "cookie-parser": "^1.4.3",
     "express": "^4.13.3",
-    "gulp": "^3.9.0",
     "jwt-simple": "^0.5.0",
     "lodash": "^4.11.2",
     "mongoose": "^4.6.5",
     "nconf": "^0.8.4",
     "pico-router": "^1.1.1",
     "react": "^15.0.2",
+    "react-color": "^2.13.3",
     "react-dom": "^15.0.2",
     "superagent": "^2.3.0",
-    "vitreum": "^3.2.1"
+    "vitreum": "^4.5.2"
   }
 }

@@ -1,0 +1,18 @@
+{
+	"apps": {
+		"main" : "./client/naturalcrit/naturalcrit.jsx",
+		"badges": "./client/badges/badges.jsx"
+	},
+	"assets" : ["*.svg", "*.png", "*.jpg", "*.pdf", "*.eot", "*.otf", "*.woff", "*.woff2", "*.ico", "*.ttf"],
+	"shared" : ["./shared"],
+	"libs" : [
+		"react",
+		"react-dom",
+		"lodash",
+		"classnames",
+		"superagent",
+		"pico-router",
+		"create-react-class",
+		"react-color"
+	]
+}
