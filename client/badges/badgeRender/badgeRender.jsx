@@ -106,23 +106,36 @@ const BadgeRender = createClass({
 			return acc;
 		}, [[]]);
 		_.each(lines, (line, index)=>{
-			this.ctx.fillText(line.join(' '),15,330 + index*20);
+			this.ctx.fillText(line.join(' '),15,315 + index*20);
 		});
+	},
+	drawAttribution : function(svg){
+		const check = svg.match(/<text.*<\/text>/);
+		if(check && check.length){
+			const a = check[0].indexOf('Created by ') + 11;
+			const b = check[0].indexOf('</text>');
+			const author = check[0].substr(a, b-a);
+			this.ctx.textAlign='left';
+			this.ctx.font='10px Open Sans';
+			this.ctx.fillStyle = "#bbb";
+			this.ctx.fillText(`Icon by ${author}`, 3, this.refs.canvas.height - 7);
+		}
 	},
 
 	drawBadge : function(props){
-		let height = (props.text ? 400 : 300);
+		let height = (props.text ? 400 : 320);
 		if(this.refs.canvas.height != height) this.refs.canvas.height = height;
 		this.drawSVG(props)
 			.then(()=>{
 				this.drawTitle(props.title);
 				this.drawText(props.text);
+				this.drawAttribution(props.rawSVG);
 			})
 	},
 
 	render: function(){
 		return <div className='badgeRender'>
-			<canvas ref='canvas' width={300} height={300}/>
+			<canvas ref='canvas' width={300} height={320}/>
 			<div>
 				<button onClick={this.handleDownload}>
 					<i className='fa fa-download' />
