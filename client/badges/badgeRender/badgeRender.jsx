@@ -52,7 +52,7 @@ const BadgeRender = createClass({
 		return new Promise((resolve, reject)=>{
 			if(!props.rawSVG) return resolve();
 			const icon = new Image();
-			let svg = _.reduce(['path', 'rect', 'polygon'], (acc, type)=>{
+			let svg = _.reduce(['path', 'rect', 'polygon', 'circle', 'polyline'], (acc, type)=>{
 				return replaceAll(acc, `<${type}`, `<${type} style="fill:${props.color}"`);
 			}, props.rawSVG);
 			//TODO: Remove all text nodes?
