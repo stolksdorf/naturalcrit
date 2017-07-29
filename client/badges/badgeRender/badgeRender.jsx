@@ -52,10 +52,12 @@ const BadgeRender = createClass({
 		return new Promise((resolve, reject)=>{
 			if(!props.rawSVG) return resolve();
 			const icon = new Image();
-			let svg = _.reduce(['path', 'rect', 'polygon', 'circle', 'polyline'], (acc, type)=>{
-				return replaceAll(acc, `<${type}`, `<${type} style="fill:${props.color}"`);
-			}, props.rawSVG);
-			//TODO: Remove all text nodes?
+			let svg = props.rawSVG || '';
+			if(svg.indexOf('style=') === -1){
+				svg = _.reduce(['path', 'rect', 'polygon', 'circle', 'polyline', 'ellipse'], (acc, type)=>{
+					return replaceAll(acc, `<${type}`, `<${type} style="fill:${props.color}"`);
+				}, svg);
+			}
 			svg = svg.replace(/<text.*<\/text>/, '');
 			icon.onload = ()=>resolve(icon);
 			icon.src = `data:image/svg+xml;base64,${btoa(svg)}`;
@@ -110,16 +112,22 @@ const BadgeRender = createClass({
 		});
 	},
 	drawAttribution : function(svg){
+		const canvas = this.refs.canvas;
+		this.ctx.textAlign='left';
+		this.ctx.font='9px Open Sans';
+		this.ctx.fillStyle = "#bbb";
+		this.ctx.fillText(`Made with NaturalCrit`, canvas.width - 95, canvas.height - 7);
+
 		const check = svg.match(/<text.*<\/text>/);
 		if(check && check.length){
 			const a = check[0].indexOf('Created by ') + 11;
 			const b = check[0].indexOf('</text>');
 			const author = check[0].substr(a, b-a);
-			this.ctx.textAlign='left';
-			this.ctx.font='10px Open Sans';
-			this.ctx.fillStyle = "#bbb";
-			this.ctx.fillText(`Icon by ${author}`, 3, this.refs.canvas.height - 7);
+
+			this.ctx.fillText(`Icon by ${author}`, canvas.width - 95, canvas.height - 17);
 		}
+
+
 	},
 
 	drawBadge : function(props){
