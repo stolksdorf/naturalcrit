@@ -26,15 +26,11 @@ const Badges = createClass({
 
 	render: function(){
 		return <div className='badges'>
-
 			<h1>D&D Achievement Badges</h1>
 			<p>Want to give your players a little something extra? Create a custom achivement badge just for them!</p>
 			<div className='content'>
 				<Controls data={this.state} onChange={(newState)=>this.setState(newState)} />
 				<BadgeRender {...this.state} />
-
-
-
 			</div>
 			<div className='credit'>
 				<span>Inspired by</span> <a href='http://howlettstudios.com/dd-badges/'>Howlett Studios's D&D badges</a>

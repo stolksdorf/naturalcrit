@@ -62,7 +62,6 @@ const Controls = createClass({
 					className='value'
 					disableAlpha={true}
 					color={this.props.data.color}
-
 					onChange={(colorObj)=>this.handleChange('color', colorObj.hex)}
 				/>
 			</div>
@@ -76,6 +75,7 @@ const Controls = createClass({
 						<i className='fa fa-arrow-down' />
 						<p>Drop SVG here</p>
 					</div>
+					<input type='file' onChange={this.handleDrop} />
 					<p>Download an icon from <a href='https://thenounproject.com/'>The Noun Project</a>, then drag and drop it here.</p>
 				</div>
 			</div>
@@ -84,5 +84,3 @@ const Controls = createClass({
 });
 
 module.exports = Controls;
-
-//					{/*onChangeComplete={(colorObj)=>this.handleChange('color', colorObj.hex)}*/}
