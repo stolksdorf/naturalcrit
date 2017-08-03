@@ -116,7 +116,7 @@ const BadgeRender = createClass({
 		this.ctx.textAlign='left';
 		this.ctx.font='9px Open Sans';
 		this.ctx.fillStyle = "#bbb";
-		this.ctx.fillText(`Made with NaturalCrit`, canvas.width - 95, canvas.height - 7);
+		let maxDepth = 95;
 
 		const check = svg.match(/<text.*<\/text>/);
 		if(check && check.length){
@@ -124,10 +124,11 @@ const BadgeRender = createClass({
 			const b = check[0].indexOf('</text>');
 			const author = check[0].substr(a, b-a);
 
-			this.ctx.fillText(`Icon by ${author}`, canvas.width - 95, canvas.height - 17);
+			const width = this.ctx.measureText(`Icon by ${author}`).width;
+			maxDepth = _.max([maxDepth, width + 3]);
+			this.ctx.fillText(`Icon by ${author}`, canvas.width - maxDepth, canvas.height - 17);
 		}
-
-
+		this.ctx.fillText(`Made with NaturalCrit`, canvas.width - maxDepth, canvas.height - 7);
 	},
 
 	drawBadge : function(props){

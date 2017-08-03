@@ -33,6 +33,11 @@ const Badges = createClass({
 				<Controls data={this.state} onChange={(newState)=>this.setState(newState)} />
 				<BadgeRender {...this.state} />
 
+
+
+			</div>
+			<div className='credit'>
+				<span>Inspired by</span> <a href='http://howlettstudios.com/dd-badges/'>Howlett Studios's D&D badges</a>
 			</div>
 		</div>
 	}
