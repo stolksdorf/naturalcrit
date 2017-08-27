@@ -26,17 +26,20 @@
 		}
 	}
 	.credit{
+		display: block;
 		margin-top  : 50px;
 		opacity     : 0.8;
 		font-family : 'Calluna';
 		font-size   : 0.8em;
 		text-align  : center;
-		span{
-			display       : block;
-			margin-bottom : 5px;
-		}
-		a{
-			font-weight : 800;
+		text-decoration: none;
+		color : inherit;
+		cursor: pointer;
+		line-height: 1.2em;
+
+		&:hover{
+			text-decoration: underline;
 		}
 	}
 }
+

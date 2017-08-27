@@ -53,6 +53,7 @@ const BadgeRender = createClass({
 			if(!props.rawSVG) return resolve();
 			const icon = new Image();
 			let svg = props.rawSVG || '';
+			//console.log(svg);
 			if(svg.indexOf('style=') === -1){
 				svg = _.reduce(['path', 'rect', 'polygon', 'circle', 'polyline', 'ellipse'], (acc, type)=>{
 					return replaceAll(acc, `<${type}`, `<${type} style="fill:${props.color}"`);

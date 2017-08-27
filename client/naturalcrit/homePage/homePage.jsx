@@ -6,6 +6,7 @@ const NaturalCritIcon = require('naturalcrit/svg/naturalcrit.svg.jsx');
 
 const HomebrewIcon = require('naturalcrit/svg/homebrew.svg.jsx');
 const TPKIcon = require('naturalcrit/svg/tpk.svg.jsx');
+const BadgeIcon = require('naturalcrit/svg/badge.svg.jsx');
 
 
 const HomePage = React.createClass({
@@ -18,6 +19,16 @@ const HomePage = React.createClass({
 						name : 'The Homebrewery',
 						icon : <HomebrewIcon />,
 						desc : 'Make authentic-looking D&D homebrews using Markdown',
+
+						show : true,
+						beta : false
+					},
+					{
+						id : 'badges',
+						path : 'http://naturalcrit.com/badges',
+						name : 'Achivement Badges',
+						icon : <BadgeIcon />,
+						desc : 'Create simple badges to award your players',
 
 						show : true,
 						beta : false
