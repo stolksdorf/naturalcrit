@@ -26,7 +26,7 @@ const HomePage = React.createClass({
 					{
 						id : 'badges',
 						path : 'http://naturalcrit.com/badges',
-						name : 'Achivement Badges',
+						name : 'Achievement Badges',
 						icon : <BadgeIcon />,
 						desc : 'Create simple badges to award your players',
 
