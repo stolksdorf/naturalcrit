@@ -149,7 +149,7 @@ const BadgeRender = createClass({
 			<div>
 				<button onClick={this.handleDownload}>
 					<i className='fa fa-download' />
-					Download
+					Download PNG
 				</button>
 			</div>
 		</div>

@@ -38,7 +38,7 @@ const AccountActions = {
 	},
 
 	createSession : (token) => {
-		document.cookie = `nc_session=${token};expires=Thu, 18 Dec 2018 12:00:00 UTC; path=/;domain=${window.domain};`;
+		document.cookie = `nc_session=${token};expires=Thu, 18 Dec 2036 12:00:00 UTC; path=/;domain=${window.domain};`;
 	},
 
 	removeSession : () => {
