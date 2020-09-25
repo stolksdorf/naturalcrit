@@ -3,7 +3,7 @@ const _     = require('lodash');
 const cx    = require('classnames');
 
 const NaturalCritIcon = require('naturalcrit/svg/naturalcrit.svg.jsx');
-const AccountActions = require('./account.actions.js');
+const AccountActions = require('../account.actions.js');
 
 
 const LoginPage = React.createClass({
@@ -67,6 +67,7 @@ const LoginPage = React.createClass({
 			processing : true,
 			errors     : null
 		});
+		console.log("about to start login");
 		AccountActions.login(this.state.username, this.state.password)
 			.then((token) => {
 				this.setState({
@@ -147,6 +148,53 @@ const LoginPage = React.createClass({
 		}
 	},
 
+	loginGoogle : function(){
+		this.setState({
+			processing : true,
+			errors     : null
+		});
+		console.log("about to log into google!");
+		window.location.href='/auth/google';
+	},
+
+	linkGoogle : function(){
+		if(!confirm(`You are currently logged in as ${this.props.user.username}. Do you want to link this user to a Google account?`)) return;
+
+		this.setState({
+			processing : true,
+			errors     : null
+		});
+		console.log("about to link account to google!");
+		window.location.href='/auth/google';
+	},
+
+	// loginGoogle : function(){
+	// 	this.setState({
+	// 		processing : true,
+	// 		errors     : null
+	// 	});
+	// 	console.log("about to log into google!");
+	// 	AccountActions.loginGoogle();
+	// },
+
+
+	// 	console.log("about to start login");
+	// 	AccountActions.login(this.state.username, this.state.password)
+	// 		.then((token) => {
+	// 			this.setState({
+	// 				processing : false,
+	// 				errors : null,
+	// 				success : true
+	// 			}, this.redirect);
+	// 		})
+	// 		.catch((err) => {
+	// 			console.log(err);
+	// 			this.setState({
+	// 				processing : false,
+	// 				errors : err
+	// 			});
+	// 		});
+	// },
 
 	renderErrors : function(){
 		if(!this.state.errors) return;
@@ -253,6 +301,8 @@ const LoginPage = React.createClass({
 				</div>
 				{this.renderErrors()}
 				{this.renderButton()}
+				<div className='divider'>⎯⎯ OR ⎯⎯</div>
+				<button	className='google' onClick={this.linkGoogle}></button>
 			</div>
 			{this.renderLoggedIn()}
 		</div>

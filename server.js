@@ -6,7 +6,12 @@ require('app-module-path').addPath('./shared');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const express = require("express");
+const authRoutes = require('./server/auth_routes');
+//const userRoutes = require('./server/profile_routes');
+const passportSetup = require('./server/passport_setup');
+const passport = require('passport');
 const app = express();
+
 app.use(express.static(__dirname + '/build'));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -23,12 +28,17 @@ require('mongoose')
 	.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/naturalcrit')
 	.connection.on('error', () => { console.log(">>>ERROR: Run Mongodb.exe ya goof!") });
 
+//// initialize passport
+//app.use(passport.initialize());
 
 //Load in account api Routes
 app.use(require('./server/account.api.js'));
 
+// set up routes
+app.use('/auth', authRoutes);
+//app.use('/user', userRoutes);
 
-//Homebrew Reidrect
+//Homebrew Redirect
 app.all('/homebrew*', (req, res) => {
 	return res.redirect(302, 'http://homebrewery.naturalcrit.com' + req.url.replace('/homebrew', ''));
 });
@@ -45,9 +55,17 @@ app.get('/badges', (req, res)=>{
 
 //Render Main Page
 app.get('*', (req, res) => {
+	let authToken = '';
+	if(res.locals && res.locals.jwt){
+		authToken = res.locals.jwt;
+		console.log("AUTH TOKEN");
+		console.log(authToken);
+	}
+
 	render('main', templateFn, {
 			url : req.url,
 			user : req.user,
+			authToken : authToken,
 			domain : config.get('domain')
 		})
 		.then((page) => res.send(page))

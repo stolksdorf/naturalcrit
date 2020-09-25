@@ -9,6 +9,7 @@ const AccountModel = require('./account.model.js').model;
 router.post('/login', (req, res) => {
 	const user = req.body.user;
 	const pass = req.body.pass;
+	console.log("IN THE LOGIN PAGE");
 
 	AccountModel.login(user, pass)
 		.then((jwt) => {
@@ -52,6 +53,7 @@ router.use((req, res, next) => {
 	if(req.cookies && req.cookies.nc_session){
 		try{
 			req.user = jwt.decode(req.cookies.nc_session, config.get('secret'));
+			console.log(req.user);
 		}catch(e){
 
 		}
