@@ -14,9 +14,9 @@ const generateAccessToken = (req, res) => {
   // When the token was issued
   payload.issued = (new Date());
   // Which service issued the Token
-  payload.issuer = config.get('authentication.token.issuer');
+  payload.issuer = config.get('authentication_token_issuer');
   // Which service is the token intended for
-  payload.audience = config.get('authentication.token.audience');
+  payload.audience = config.get('authentication_token_audience');
   // The signing key for signing the token
   delete payload.password;
   delete payload._id;
@@ -24,7 +24,7 @@ const generateAccessToken = (req, res) => {
 	console.log("THE PAYLOAD");
 	console.log(payload);
 
-  const secret = config.get('authentication.token.secret');
+  const secret = config.get('authentication_token_secret');
 
   const token = jwt.encode(payload, secret);
 

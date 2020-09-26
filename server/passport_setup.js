@@ -26,9 +26,9 @@ passport.deserializeUser((id, done) => {
 
 passport.use(new JwtStrategy({
 		jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("jwt"),
-		secretOrKey: config.get('authentication.token.secret'),
-		issuer: config.get('authentication.token.issuer'),
-		audience: config.get('authentication.token.audience')
+		secretOrKey: config.get('authentication_token_secret'),
+		issuer: config.get('authentication_token_issuer'),
+		audience: config.get('authentication_token_audience')
 	},
 	(payload, done) => {
 	  const user = users.getUserById(parseInt(payload.sub));
