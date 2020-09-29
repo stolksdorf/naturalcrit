@@ -21,24 +21,16 @@ const AccountSchema = mongoose.Schema({
 
 AccountSchema.pre('save', function(next) {
 	const account = this;
-	console.log('start save');
 	//if (!account.isModified('password')) return next(); //Need to remove this to allow logins without password via google
 	if (account.isModified('password')) {
-		console.log("in password");
 
 		const salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);
 		const hash = bcrypt.hashSync(account.password, salt);
 
-		console.log("still in password");
-
 		if(!hash) return next({ok : false, msg : 'err making password hash'});
 		account.password = hash;
 	}
-
-	console.log("end save");
-	//return next();
 	return next();
-	console.log("after next");
 });
 
 AccountSchema.statics.login = function(username, pass){
@@ -58,7 +50,6 @@ AccountSchema.statics.login = function(username, pass){
 			return user.getJWT();
 		})
 };
-
 
 AccountSchema.statics.signup = function(username, pass){
 	return Account.getUser(username, pass)

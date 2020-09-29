@@ -3,6 +3,7 @@
 const _ = require('lodash');
 require('app-module-path').addPath('./shared');
 
+const jwt = require('jwt-simple');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const express = require("express");
@@ -30,6 +31,17 @@ require('mongoose')
 
 //// initialize passport
 //app.use(passport.initialize());
+app.use((req, res, next)=>{
+	if(req.cookies && req.cookies.nc_session){
+		try{
+			req.user = jwt.decode(req.cookies.nc_session, config.get('authentication_token_secret'));
+		}catch(e){
+			console.log("Couldn't find a current logged-in user");
+			console.error(e);
+		}
+	}
+	return next();
+});
 
 //Load in account api Routes
 app.use(require('./server/account.api.js'));
@@ -55,17 +67,10 @@ app.get('/badges', (req, res)=>{
 
 //Render Main Page
 app.get('*', (req, res) => {
-	let authToken = '';
-	if(res.locals && res.locals.jwt){
-		authToken = res.locals.jwt;
-		console.log("AUTH TOKEN");
-		console.log(authToken);
-	}
-
 	render('main', templateFn, {
 			url : req.url,
 			user : req.user,
-			authToken : authToken,
+			//authToken : authToken,
 			domain : config.get('domain')
 		})
 		.then((page) => res.send(page))

@@ -67,7 +67,6 @@ const LoginPage = React.createClass({
 			processing : true,
 			errors     : null
 		});
-		console.log("about to start login");
 		AccountActions.login(this.state.username, this.state.password)
 			.then((token) => {
 				this.setState({
@@ -148,23 +147,19 @@ const LoginPage = React.createClass({
 		}
 	},
 
-	loginGoogle : function(){
-		this.setState({
-			processing : true,
-			errors     : null
-		});
-		console.log("about to log into google!");
-		window.location.href='/auth/google';
-	},
-
 	linkGoogle : function(){
-		if(!confirm(`You are currently logged in as ${this.props.user.username}. Do you want to link this user to a Google account?`)) return;
+		if(this.props.user) {
+			if(!confirm(`You are currently logged in as ${this.props.user.username}. ` +
+									`Do you want to link this user to a Google account? ` +
+									`This will allow you to access the Homebrewery with your ` +
+									`Google account and back up your files to Google Drive.`))
+				return;
+		}
 
 		this.setState({
 			processing : true,
 			errors     : null
 		});
-		console.log("about to link account to google!");
 		window.location.href='/auth/google';
 	},
 
@@ -248,9 +243,17 @@ const LoginPage = React.createClass({
 
 	renderLoggedIn : function(){
 		if(!this.props.user) return;
-		return <div className='loggedin'>
-			You are logged in as {this.props.user.username}. <a href='' onClick={this.logout}>logout.</a>
-		</div>
+		let loggedInGoogle = "";
+    if (this.props.user.googleId) {
+      return <div className='loggedin'>
+				You are logged in as {this.props.user.username}. <a href='' onClick={this.logout}>logout.</a>
+			</div>
+    }
+		else {
+			return <div className='loggedin'>
+				You are logged in via your Google account as {this.props.user.username}. <a href='' onClick={this.logout}>logout.</a>
+			</div>
+		}
 	},
 	render : function(){
 		return <div className='loginPage'>

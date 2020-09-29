@@ -25,6 +25,8 @@ const generateAccessToken = (req, res) => {
 	console.log(payload);
 
   const secret = config.get('authentication_token_secret');
+	console.log("ENCODING WITH SECRET:");
+	console.log(secret);
 
   const token = jwt.encode(payload, secret);
 

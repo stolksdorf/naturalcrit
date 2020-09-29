@@ -49,33 +49,17 @@ router.get('/google',
 
 // callback route for google after the authentication popup
 router.get('/google/redirect',
+  //Check if there is an existing local user
   passport.authenticate('google', { session: false }, ),
   (req, res, next) => {
+    if(!req.user.username) {  //stay on the page if we still need local sign in
+      return next();
+    }
     const jwt = generateUserToken(req, res);
     console.log("about to redirect");
-    res.locals.jwt = JSON.stringify(jwt);
-    console.log(res.locals);
-    return next();
+    const JWTToken = jwt;
+    res.cookie('nc_session', JWTToken, {maxAge: 1000*60*60*24*365, path: '/', SameSite: 'None', Secure: 'true'});
+    res.redirect('/success');
   });
-
-// router.get('/google/redirect',
-//   passport.authenticate('google', { session: false }, ),
-//   (req, res, next) => {
-//     const jwt = generateUserToken(req, res);
-//     console.log("about to redirect");
-//     res.locals.jwt = JSON.stringify(jwt);
-//     console.log(res.locals);
-//     return next();
-//   });
-
-// Save user to session
-/*
-router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
-	console.log("redirecting");
-	req.session.user = req.user;	//save user data to the session
-	console.log("saved user to session");
-	res.redirect(`/user/${req.user.username}`);
-});
-*/
 
 module.exports = router;

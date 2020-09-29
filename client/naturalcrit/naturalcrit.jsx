@@ -8,6 +8,7 @@ const CreateRouter = require('pico-router').createRouter;
 const HomePage = require('./homePage/homePage.jsx');
 const SignupPage = require('./signupPage/signupPage.jsx');
 const LoginPage = require('./loginPage/loginPage.jsx');
+const SuccessPage = require('./successPage/successPage.jsx');
 const GoogleRedirect = require('./googleRedirect/googleRedirect.jsx');
 
 let Router;
@@ -30,9 +31,13 @@ const Naturalcrit = React.createClass({
 					redirect={query.redirect}
 					user={this.props.user} />
 			},
+			'/success' : (args, query) => {
+				return <SuccessPage
+					user={this.props.user} />
+			},
 			'/auth/google/redirect' : (args, query) => {
 				return <GoogleRedirect
-					authToken={this.props.authToken} />
+					user={this.props.user} />
 			},
 			'*' : () => {
 				return <HomePage />

@@ -4,44 +4,32 @@ const AccountActions = {
 
 	login : (user, pass) => {
 		return new Promise((resolve, reject) => {
-			console.log('ACCOUNT ACTIONS LOGIN:');
 			request.post('/login')
 				.send({ user , pass })
 				.end((err, res) => {
 					if(err) return reject(res.body);
-					console.log("createsession");
-					console.log(res.body);
 					AccountActions.createSession(res.body);
 					return resolve(res.body);
 				});
 		});
 	},
 
-	loginGoogle : (jwt) => {
-		console.log('ACCOUNT ACTIONS GOOGLE LOGIN:');
-		AccountActions.createSession(jwt);
-		console.log("created cookie with Google JWT");
-
-			// const strWindowFeatures = 'toolbar=no, menubar=no, width=600, height=700, top=100, left=100';
-			// let signInWindow;
-			// signInWindow = window.open('auth/google', "Sign in to Homebrewery with Google", strWindowFeatures);
-			// signInWindow.focus();
-			//
-			// window.addEventListener('message', event => receiveMessage(event), false);
-			// request.get('auth/google')
-			// 	.end((err, res) => {
-			// 		if(err) return reject(res.body);
-			// 		console.log('createsession google');
-			// 		console.log(res.body);
-			// 		AccountActions.createSession(res.body);
-			// 		return resolve(res.body);
-			// 	})
-	},
-
 	signup : (user, pass) => {
 		return new Promise((resolve, reject) => {
 			request.post('/signup')
 				.send({ user , pass })
+				.end((err, res) => {
+					if(err) return reject(res.body);
+					AccountActions.createSession(res.body);
+					return resolve(res.body);
+				});
+		});
+	},
+
+	linkGoogle : (username, pass, user) => {
+		return new Promise((resolve, reject) => {
+			request.post('/link')
+				.send({ username , pass, user })
 				.end((err, res) => {
 					if(err) return reject(res.body);
 					AccountActions.createSession(res.body);

@@ -47,63 +47,43 @@ passport.use(
 		passReqToCallback: true
 	},
 	(req, accessToken, refreshToken, profile, done) => {
-		// after authenticating:
-		// check if user already exists in our db
-		console.log("is google strategy starting?");
-		console.log("FRESH ACCESS TOKEN: " + accessToken);
-		console.log("FRESH REFRES TOKEN: " + refreshToken);
+		Account.findOne({googleId: profile.id}).then((googleUser) => {
+			if(googleUser) { // Google Account already exists, just log in
+				googleUser.googleRefreshToken = refreshToken;
 
-		Account.findOne({googleId: profile.id}).then((currentUser) => {
-			console.log("looking for user");
-			console.log(req.user);
-			if(currentUser){
-				// already have the user
-				console.log("already have google account");
-				if(currentUser.username != req.user.username) {
-					console.log("This google account is already linked to another user!");
-					return done("This google account is already linked to another user!");
-				}
-
-				if(!req.user){
-					console.log("not logged in locally, but account exists");
-					return done("This google account is already linked to another user!");
-				}
-
-				if(currentUser.username == req.user.username) {
-					console.log("Already Logged In!");
-				}
-
-				currentUser.googleRefreshToken = refreshToken;
-
-				currentUser.save().then((currentuser) => {
-					currentuser.googleAccessToken  = accessToken;
-					console.log('user logged in via google: ' + currentuser);
-					return done(null, currentuser);
+				googleUser.save().then((googleUser) => {
+					googleUser.googleAccessToken  = accessToken;
+					console.log('user logged in via google: ' + googleUser);
+					return done(null, googleUser);
 				});
-			} else {
-				console.log("no google account");
+			}
+			else {					// Google Account does not exist
+				if(req.user){	// If Local account exists, merge from Google Account
+					console.log("User is already logged in locally");
+					Account.findOne({username: req.user.username}).then((localUser) => {
+						// Add googleId to user
+						localUser.googleId = profile.id;
+						localUser.googleRefreshToken = refreshToken;
 
-				if(!req.user){
-					console.log("not logged in locally to link account!");
-					new Account({
+						localUser.save((err, updatedUser) => {
+							if(err) {console.log(err); return done("err");}
+							console.log('Local user updated with Google Id: ' + updatedUser);
+							updatedUser.googleAccessToken  = accessToken;
+							console.log(updatedUser);
+							return done(null, updatedUser);
+						});
+					});
+				}
+				else{				// If Local account does not exist either, wait until user is created in googleRedirect before mergin accounts
+					console.log("not logged in locally");
+					const newAccount = new Account({
 						googleId: profile.id,
+						googleRefreshToken: refreshToken,
+						googleAccessToken: accessToken
 					});
-					return done("err");
+					req.user = newAccount;
+					return done(null, newAccount);
 				}
-
-				Account.findOne({username: req.user.username}).then((localUser) => {
-					// Add googleId to user
-					localUser.googleId = profile.id;
-					localUser.googleRefreshToken = refreshToken;
-
-					localUser.save((err, updatedUser) => {
-						if(err) {console.log(err); return done("err");}
-						console.log('Local user updated with Google Id: ' + updatedUser);
-						updatedUser.googleAccessToken  = accessToken;
-						console.log(updatedUser);
-						return done(null, updatedUser);
-					});
-				});
 			}
 		});
 	})
