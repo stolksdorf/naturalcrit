@@ -244,14 +244,14 @@ const LoginPage = React.createClass({
 	renderLoggedIn : function(){
 		if(!this.props.user) return;
 		let loggedInGoogle = "";
-    if (this.props.user.googleId) {
+    if (!this.props.user.googleId) {
       return <div className='loggedin'>
 				You are logged in as {this.props.user.username}. <a href='' onClick={this.logout}>logout.</a>
 			</div>
     }
 		else {
 			return <div className='loggedin'>
-				You are logged in via your Google account as {this.props.user.username}. <a href='' onClick={this.logout}>logout.</a>
+				You are logged in via Google as {this.props.user.username}. <a href='' onClick={this.logout}>logout.</a>
 			</div>
 		}
 	},

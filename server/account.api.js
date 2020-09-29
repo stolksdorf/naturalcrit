@@ -40,7 +40,7 @@ router.post('/signup', (req, res) => {
 });
 
 router.post('/link', (req, res) => {
-	AccountModel.findOne({username: req.user.username})
+	AccountModel.findOne({username: req.body.username})
 	.then((localUser) => {
 		// Add googleId to user
 		localUser.googleId = req.body.user.googleId;
