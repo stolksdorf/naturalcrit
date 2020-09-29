@@ -58,7 +58,7 @@ router.get('/google/redirect',
     const jwt = generateUserToken(req, res);
     console.log("about to redirect");
     const JWTToken = jwt;
-    res.cookie('nc_session', JWTToken, {maxAge: 1000*60*60*24*365, path: '/', SameSite: 'None', Secure: 'true'});
+    res.cookie('nc_session', JWTToken, {maxAge: 1000*60*60*24*365, path: '/', SameSite: 'None', Secure: 'true', Domain: '.naturalcrit.com'});
     res.redirect('/success');
   });
 
