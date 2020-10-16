@@ -23,7 +23,7 @@
     "express": "^4.13.3",
     "jwt-simple": "^0.5.0",
     "lodash": "^4.11.2",
-    "mongoose": "^4.6.5",
+    "mongoose": "^5.10.9",
     "nconf": "^0.8.4",
     "passport": "0.4.1",
     "passport-google-oauth20": "2.0.0",
