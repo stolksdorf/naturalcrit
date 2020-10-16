@@ -4,7 +4,7 @@ const cx    = require('classnames');
 
 const NaturalCritIcon = require('naturalcrit/svg/naturalcrit.svg.jsx');
 const AccountActions = require('../account.actions.js');
-
+//TODO: Almost identidal to "loginPage". Should possibly be merged to reduce redundancy
 
 const LoginPage = React.createClass({
 	getDefaultProps: function() {
@@ -37,7 +37,6 @@ const LoginPage = React.createClass({
 		}
 	},
 
-
 	handleUserChange : function(e){
 		this.setState({
 			usernameExists : true,
@@ -68,21 +67,21 @@ const LoginPage = React.createClass({
 			errors     : null
 		});
 		AccountActions.login(this.state.username, this.state.password)
-			.then((token) => {
-				this.setState({
-					processing : false,
-					errors : null,
-					success : true
-				}, this.redirect);
-			})
-			.catch((err) => {
-				console.log(err);
-				this.setState({
-					processing : false,
-					errors : err
-				});
+		.then(result => {
+			AccountActions.linkGoogle(this.state.username, this.state.password, this.props.user);
+		})
+		.then((token) => {
+			window.location = '/success';
+		})
+		.catch((err) => {
+			console.log(err);
+			this.setState({
+				processing : false,
+				errors : err
 			});
+		});
 	},
+
 	logout : function(e){
 		e.preventDefault();
 		AccountActions.removeSession();
@@ -96,20 +95,19 @@ const LoginPage = React.createClass({
 			errors     : null
 		});
 		AccountActions.signup(this.state.username, this.state.password)
-			.then((token) => {
-				this.setState({
-					processing : false,
-					errors : null,
-					success : true
-				}, this.redirect);
-			})
-			.catch((err) => {
-				console.log(err);
-				this.setState({
-					processing : false,
-					errors : err
-				});
+		.then(result => {
+			AccountActions.linkGoogle(this.state.username, this.state.password, this.props.user);
+		})
+		.then((token) => {
+			window.location = '/success';
+		})
+		.catch((err) => {
+			console.log(err);
+			this.setState({
+				processing : false,
+				errors : err
 			});
+		});
 	},
 
 	checkUsername : function(){
@@ -146,50 +144,6 @@ const LoginPage = React.createClass({
 			return this.state.username && this.state.password && !this.state.usernameExists;
 		}
 	},
-
-	linkGoogle : function(){
-		if(this.props.user) {
-			if(!confirm(`You are currently logged in as ${this.props.user.username}. ` +
-									`Do you want to link this user to a Google account? ` +
-									`This will allow you to access the Homebrewery with your ` +
-									`Google account and back up your files to Google Drive.`))
-				return;
-		}
-
-		this.setState({
-			processing : true,
-			errors     : null
-		});
-		window.location.href='/auth/google';
-	},
-
-	// loginGoogle : function(){
-	// 	this.setState({
-	// 		processing : true,
-	// 		errors     : null
-	// 	});
-	// 	console.log("about to log into google!");
-	// 	AccountActions.loginGoogle();
-	// },
-
-
-	// 	console.log("about to start login");
-	// 	AccountActions.login(this.state.username, this.state.password)
-	// 		.then((token) => {
-	// 			this.setState({
-	// 				processing : false,
-	// 				errors : null,
-	// 				success : true
-	// 			}, this.redirect);
-	// 		})
-	// 		.catch((err) => {
-	// 			console.log(err);
-	// 			this.setState({
-	// 				processing : false,
-	// 				errors : err
-	// 			});
-	// 		});
-	// },
 
 	renderErrors : function(){
 		if(!this.state.errors) return;
@@ -241,20 +195,6 @@ const LoginPage = React.createClass({
 		</button>
 	},
 
-	renderLoggedIn : function(){
-		if(!this.props.user) return;
-		let loggedInGoogle = "";
-    if (!this.props.user.googleId) {
-      return <div className='loggedin'>
-				You are logged in as {this.props.user.username}. <a href='' onClick={this.logout}>logout.</a>
-			</div>
-    }
-		else {
-			return <div className='loggedin'>
-				You are logged in via Google as {this.props.user.username}. <a href='' onClick={this.logout}>logout.</a>
-			</div>
-		}
-	},
 	render : function(){
 		return <div className='loginPage'>
 			<div className='logo'>
@@ -265,6 +205,11 @@ const LoginPage = React.createClass({
 				</span>
 			</div>
 
+			<p>To finish linking your Google account to the Homebrewery, please create a user ID<br />
+			for the Homebrewery below (or sign in to an existing Homebrewery account).<br />
+			<br />
+			You will only need to complete this step once. After your Google account is linked,<br />
+			you will be able to access the Homebrewery with your Google account.</p>
 
 			<div className='content'>
 				<div className='switchView'>
@@ -304,10 +249,7 @@ const LoginPage = React.createClass({
 				</div>
 				{this.renderErrors()}
 				{this.renderButton()}
-				<div className='divider'>⎯⎯ OR ⎯⎯</div>
-				<button	className='google' onClick={this.linkGoogle}></button>
 			</div>
-			{this.renderLoggedIn()}
 		</div>
 	}
 });

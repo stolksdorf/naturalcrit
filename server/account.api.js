@@ -1,6 +1,11 @@
-const config = require('nconf');
 const jwt = require('jwt-simple');
 const router = require('express').Router();
+
+const config = require('nconf')
+	.argv()
+	.env({ lowerCase: true })
+	.file('environment', { file: `config/${process.env.NODE_ENV}.json` })
+	.file('defaults', { file: 'config/default.json' });
 
 const AccountModel = require('./account.model.js').model;
 
@@ -34,6 +39,24 @@ router.post('/signup', (req, res) => {
 		});
 });
 
+router.post('/link', (req, res) => {
+	AccountModel.findOne({username: req.body.username})
+	.then((localUser) => {
+		// Add googleId to user
+		localUser.googleId = req.body.user.googleId;
+		localUser.googleRefreshToken = req.body.user.googleRefreshToken;
+
+		localUser.save((err, updatedUser) => {
+			if(err) {
+				return res.status(err.status || 500).json(err);
+			}
+			console.log('Local user updated with Google Id: ' + updatedUser);
+			updatedUser.googleAccessToken  = req.body.user.googleAccessToken;
+			return res.json(updatedUser.getJWT());
+		});
+	});
+});
+
 router.get('/user_exists/:username', (req, res) => {
 	if(!req.params.username) {
 		return res.json(false);
@@ -48,16 +71,7 @@ router.get('/user_exists/:username', (req, res) => {
 });
 
 
-router.use((req, res, next) => {
-	if(req.cookies && req.cookies.nc_session){
-		try{
-			req.user = jwt.decode(req.cookies.nc_session, config.get('secret'));
-		}catch(e){
 
-		}
-	}
-	return next();
-});
 
 
 module.exports = router;

@@ -9,20 +9,27 @@ const SALT_WORK_FACTOR = 10;
 
 const AccountSchema = mongoose.Schema({
 	username: { type: String, required: true, index: { unique: true } },
-	password: { type: String, required: true }
+	password: { type: String, required: false },
+
+	googleId: 				 	String,
+	googleAccessToken:  String,
+	googleRefreshToken: String,
+
 
 }, { versionKey: false });
 
 
 AccountSchema.pre('save', function(next) {
 	const account = this;
-	if (!account.isModified('password')) return next();
+	//if (!account.isModified('password')) return next(); //Need to remove this to allow logins without password via google
+	if (account.isModified('password')) {
 
-	const salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);
-	const hash = bcrypt.hashSync(account.password, salt);
+		const salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);
+		const hash = bcrypt.hashSync(account.password, salt);
 
-	if(!hash) return next({ok : false, msg : 'err making password hash'});
-	account.password = hash;
+		if(!hash) return next({ok : false, msg : 'err making password hash'});
+		account.password = hash;
+	}
 	return next();
 });
 
@@ -43,7 +50,6 @@ AccountSchema.statics.login = function(username, pass){
 			return user.getJWT();
 		})
 };
-
 
 AccountSchema.statics.signup = function(username, pass){
 	return Account.getUser(username, pass)
