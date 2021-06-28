@@ -44,7 +44,8 @@ passport.use(
 		callbackURL: '/auth/google/redirect',
 		clientID: config.get('googleClientId'),
 		clientSecret: config.get('googleClientSecret'),
-		passReqToCallback: true
+		passReqToCallback: true,
+		proxy: true //Forces callbackUrl to use https if visited from https
 	},
 	(req, accessToken, refreshToken, profile, done) => {
 		Account.findOne({googleId: profile.id}).then((googleUser) => {
