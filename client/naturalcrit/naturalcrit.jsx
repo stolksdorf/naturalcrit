@@ -40,7 +40,9 @@ const Naturalcrit = React.createClass({
 					user={this.props.user} />
 			},
 			'*' : () => {
-				return <HomePage />
+				return <HomePage 
+					configTools={this.props.tools}
+					user={this.props.user} />
 			}
 		});
 	},
