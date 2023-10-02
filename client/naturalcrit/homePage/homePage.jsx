@@ -15,7 +15,7 @@ const HomePage = React.createClass({
 				tools : [
 					{
 						id : 'homebrew',
-						path : 'http://homebrewery.naturalcrit.com',
+						path : 'https://homebrewery.naturalcrit.com',
 						name : 'The Homebrewery',
 						icon : <HomebrewIcon />,
 						desc : 'Make authentic-looking D&D homebrews using Markdown',
@@ -25,7 +25,7 @@ const HomePage = React.createClass({
 					},
 					{
 						id : 'badges',
-						path : 'http://naturalcrit.com/badges',
+						path : 'https://naturalcrit.com/badges',
 						name : 'Achievement Badges',
 						icon : <BadgeIcon />,
 						desc : 'Create simple badges to award your players',
