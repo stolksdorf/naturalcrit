@@ -52,7 +52,7 @@ app.use('/auth', authRoutes);
 
 //Homebrew Redirect
 app.all('/homebrew*', (req, res) => {
-	return res.redirect(302, 'http://homebrewery.naturalcrit.com' + req.url.replace('/homebrew', ''));
+	return res.redirect(302, 'https://homebrewery.naturalcrit.com' + req.url.replace('/homebrew', ''));
 });
 
 
