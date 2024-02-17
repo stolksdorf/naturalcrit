@@ -5,6 +5,8 @@ const cx    = require('classnames');
 const NaturalCritIcon = require('naturalcrit/svg/naturalcrit.svg.jsx');
 const AccountActions = require('../account.actions.js');
 
+const RedirectLocation = 'NC-REDIRECT-URL';
+
 const SuccessPage = React.createClass({
 	getDefaultProps: function() {
 		return {
@@ -31,7 +33,9 @@ const SuccessPage = React.createClass({
 		};
 	},
 	componentDidMount: function() {
-	  setTimeout(function(){window.location='/login';}, 1500);
+		const redirectURL = window.localStorage.getItem(RedirectLocation) || '/login';
+		window.localStorage.removeItem(RedirectLocation);
+		setTimeout(function(){window.location=redirectURL;}, 1500);
  },
  render : function(){
 	 return <div className='loginPage'>

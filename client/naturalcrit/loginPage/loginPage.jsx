@@ -5,6 +5,8 @@ const cx    = require('classnames');
 const NaturalCritIcon = require('naturalcrit/svg/naturalcrit.svg.jsx');
 const AccountActions = require('../account.actions.js');
 
+const RedirectLocation = 'NC-REDIRECT-URL';
+
 
 const LoginPage = React.createClass({
 	getDefaultProps: function() {
@@ -35,8 +37,16 @@ const LoginPage = React.createClass({
 		window.document.onkeypress = (e)=>{
 			if(e.code == 'Enter') this.handleClick();
 		}
+
+		this.handleRedirectURL();
 	},
 
+	handleRedirectURL : function() {
+		if(!this.props.redirect) { 
+			return window.localStorage.removeItem(RedirectLocation);
+		};
+		return window.localStorage.setItem(RedirectLocation, this.props.redirect);
+	},
 
 	handleUserChange : function(e){
 		this.setState({
