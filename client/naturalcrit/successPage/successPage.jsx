@@ -33,8 +33,8 @@ const SuccessPage = React.createClass({
 		};
 	},
 	componentDidMount: function() {
-		const redirectURL = window.localStorage.getItem(RedirectLocation) || '/';
-		window.localStorage.removeItem(RedirectLocation);
+		const redirectURL = window.sessionStorage.getItem(RedirectLocation) || '/';
+		window.sessionStorage.removeItem(RedirectLocation);
 		setTimeout(function(){window.location=redirectURL;}, 1500);
  },
  render : function(){

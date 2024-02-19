@@ -43,9 +43,9 @@ const LoginPage = React.createClass({
 
 	handleRedirectURL : function() {
 		if(!this.props.redirect) { 
-			return window.localStorage.removeItem(RedirectLocation);
+			return window.sessionStorage.removeItem(RedirectLocation);
 		};
-		return window.localStorage.setItem(RedirectLocation, this.props.redirect);
+		return window.sessionStorage.setItem(RedirectLocation, this.props.redirect);
 	},
 
 	handleUserChange : function(e){
