@@ -17,7 +17,7 @@
   "dependencies": {
     "app-module-path": "2.2.0",
     "bcrypt-nodejs": "0.0.3",
-    "body-parser": "^1.15.2",
+    "body-parser": "^1.20.2",
     "classnames": "^2.2.0",
     "cookie-parser": "^1.4.3",
     "express": "^4.19.2",
