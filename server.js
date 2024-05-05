@@ -78,6 +78,11 @@ app.get('*', (req, res) => {
 });
 
 
-var port = process.env.PORT || 8010;
+var port = process.env.PORT || config.get('web_port') || 8010;
 app.listen(port);
-console.log('Listening on localhost:' + port);
+console.log(`\n\tserver started at: ${new Date().toLocaleString()}`);
+const reset = '\x1b[0m'; // Reset to default style
+const bright = '\x1b[1m'; // Bright (bold) style
+const cyan = '\x1b[36m'; // Cyan color
+const underline = '\x1b[4m'; // Underlined style
+console.log(`\t${bright + cyan}Open in browser: ${reset}${underline + bright + cyan}http://localhost:${port}${reset}\n\n`)
