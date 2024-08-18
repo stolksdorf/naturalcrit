@@ -56,7 +56,7 @@ app.all('/homebrew*', (req, res) => {
 });
 
 
-const render = require('vitreum/steps/render');
+const render = require('./scripts/steps/render.js');
 const templateFn = require('./client/template.js');
 
 app.get('/badges', (req, res)=>{
