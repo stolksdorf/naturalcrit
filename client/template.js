@@ -11,7 +11,6 @@ module.exports = function(vitreum){
 		<link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg" />
 		<link rel="shortcut icon" href="/assets/favicon/favicon.ico" />
 		<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png" />
-		<link rel="manifest" href="/assets/favicon/site.webmanifest" />
 
 		<title>NaturalCrit - D&D Tools</title>
 		${vitreum.head}
