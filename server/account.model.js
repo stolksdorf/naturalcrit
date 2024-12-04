@@ -8,98 +8,70 @@ const bcrypt = require('bcrypt-nodejs');
 const SALT_WORK_FACTOR = 10;
 
 const AccountSchema = mongoose.Schema({
-	username: { type: String, required: true, index: { unique: true } },
+	username: { type: String, required: true, unique: true },
 	password: { type: String, required: false },
 
-	googleId: 				 	String,
-	googleAccessToken:  String,
+	googleId: String,
+	googleAccessToken: String,
 	googleRefreshToken: String,
-
 
 }, { versionKey: false });
 
-
-AccountSchema.pre('save', function(next) {
-	const account = this;
-	//if (!account.isModified('password')) return next(); //Need to remove this to allow logins without password via google
-	if (account.isModified('password')) {
-
-		const salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);
-		const hash = bcrypt.hashSync(account.password, salt);
-
-		if(!hash) return next({ok : false, msg : 'err making password hash'});
-		account.password = hash;
+AccountSchema.pre('save', async function(next) {
+	try {
+		const account = this;
+		if (account.isModified('password')) {
+			const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
+			account.password = await bcrypt.hash(account.password, salt, null);
+		}
+		next();
+	} catch (err) {
+		next({ ok: false, msg: 'Error generating password hash' });
 	}
-	return next();
 });
 
-AccountSchema.statics.login = function(username, pass){
-	const BadLogin = { ok : false, msg : 'Invalid username and password combination.', status : 401};
+AccountSchema.statics.login = async function(username, pass) {
+	const BadLogin = { ok: false, msg: 'Invalid username and password combination.', status: 401 };
+	let user = await this.getUser(username);
+	if (!user) throw BadLogin;
 
-	let user;
-	return Account.getUser(username)
-		.then((_user) => {
-			if(!_user) throw BadLogin;
-			user = _user;
-		})
-		.then(() => {
-			return user.checkPassword(pass)
-		})
-		.then((isMatch) => {
-			if(!isMatch) throw BadLogin;
-			return user.getJWT();
-		})
+	const isMatch = await user.checkPassword(pass);
+	if (!isMatch) throw BadLogin;
+
+	return user.getJWT();
 };
 
-AccountSchema.statics.signup = function(username, pass){
-	return Account.getUser(username, pass)
-		.then((user) => {
-			if(user) throw {ok : false, msg : 'User with that name already exists', status : 400};
-		})
-		.then(() => {
-			return Account.makeUser(username, pass);
-		})
-		.then((newUser) => {
-			return newUser.getJWT();
-		});
+AccountSchema.statics.signup = async function(username, pass) {
+	let user = await this.getUser(username);
+	if (user) throw { ok: false, msg: 'User with that name already exists', status: 400 };
+
+	const newUser = await this.makeUser(username, pass);
+	return newUser.getJWT();
 };
 
-
-AccountSchema.statics.makeUser = function(username, password){
-	return new Promise((resolve, reject) => {
-		const newAccount = new Account({ username, password });
-		newAccount.save((err, obj) => {
-			if(err){
-				console.log(err);
-				return reject({ok : false, msg : 'Issue creating new account'});
-			}
-			return resolve(newAccount);
-		});
-	});
+AccountSchema.statics.makeUser = async function(username, password) {
+	const newAccount = new this({ username, password });
+	try {
+		await newAccount.save();
+		return newAccount;
+	} catch (err) {
+		throw { ok: false, msg: 'Issue creating new account', error: err };
+	}
 };
 
-AccountSchema.statics.getUser = function(username){
-	return new Promise((resolve, reject) => {
-		Account.find({username : username}, (err, users) => {
-			if(err) return reject(err);
-			if(!users || users.length == 0) return resolve(false);
-			return resolve(users[0]);
-		})
-	});
+AccountSchema.statics.getUser = async function(username) {
+	const users = await this.find({ username });
+	if (!users || users.length === 0) return false;
+	return users[0];
 };
 
-AccountSchema.methods.checkPassword = function(candidatePassword) {
-	return new Promise((resolve, reject) => {
-		bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-			if (err) return reject(err);
-			return resolve(isMatch);
-		});
-	});
+AccountSchema.methods.checkPassword = async function(candidatePassword) {
+	return bcrypt.compareSync(candidatePassword, this.password);
 };
 
-AccountSchema.methods.getJWT = function(){
+AccountSchema.methods.getJWT = function() {
 	const payload = this.toJSON();
-	payload.issued = (new Date());
+	payload.issued = new Date();
 
 	delete payload.password;
 	delete payload._id;
@@ -107,10 +79,9 @@ AccountSchema.methods.getJWT = function(){
 	return jwt.encode(payload, config.get('secret'));
 };
 
-
 const Account = mongoose.model('Account', AccountSchema);
 
 module.exports = {
-	schema : AccountSchema,
-	model : Account,
-}
+	schema: AccountSchema,
+	model: Account,
+};

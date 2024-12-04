@@ -9,70 +9,57 @@ const config = require('nconf')
 
 const AccountModel = require('./account.model.js').model;
 
-
-//Bumpo these out to a api file
-router.post('/login', (req, res) => {
-	const user = req.body.user;
-	const pass = req.body.pass;
-
-	AccountModel.login(user, pass)
-		.then((jwt) => {
-			return res.json(jwt);
-		})
-		.catch((err) => {
-			return res.status(err.status || 500).json(err);
-		});
-
-	//return res.status(200).send();
-});
-
-router.post('/signup', (req, res) => {
-	const user = req.body.user;
-	const pass = req.body.pass;
-
-	AccountModel.signup(user, pass)
-		.then((jwt) => {
-			return res.json(jwt);
-		})
-		.catch((err) => {
-			return res.status(err.status || 500).json(err);
-		});
-});
-
-router.post('/link', (req, res) => {
-	AccountModel.findOne({username: req.body.username})
-	.then((localUser) => {
-		// Add googleId to user
-		localUser.googleId = req.body.user.googleId;
-		localUser.googleRefreshToken = req.body.user.googleRefreshToken;
-
-		localUser.save((err, updatedUser) => {
-			if(err) {
-				return res.status(err.status || 500).json(err);
-			}
-			console.log('Local user updated with Google Id: ' + updatedUser);
-			updatedUser.googleAccessToken  = req.body.user.googleAccessToken;
-			return res.json(updatedUser.getJWT());
-		});
-	});
-});
-
-router.get('/user_exists/:username', (req, res) => {
-	console.log(req.params);
-	if(!req.params.username) {
-		return res.json(false);
+router.post('/login', async (req, res) => {
+	try {
+		const { user, pass } = req.body;
+		const token = await AccountModel.login(user, pass);
+		res.json(token);
+	} catch (err) {
+		res.status(err.status || 500).json(err);
 	}
-	AccountModel.getUser(req.params.username)
-		.then((user) => {
-			return res.json(!!user);
-		})
-		.catch((err) => {
-			return res.status(err.status || 500).json(err);
-		});
 });
 
+router.post('/signup', async (req, res) => {
+	try {
+		const { user, pass } = req.body;
+		const token = await AccountModel.signup(user, pass);
+		res.json(token);
+	} catch (err) {
+		res.status(err.status || 500).json(err);
+	}
+});
 
+router.post('/link', async (req, res) => {
+	try {
+		const { username, user } = req.body;
+		const localUser = await AccountModel.findOne({ username });
+		if (!localUser) throw { status: 404, msg: 'User not found' };
 
+		// Add Google details to the user
+		localUser.googleId = user.googleId;
+		localUser.googleRefreshToken = user.googleRefreshToken;
+		localUser.googleAccessToken = user.googleAccessToken;
 
+		await localUser.save();
+
+		console.log('Local user updated with Google Id:', localUser);
+		res.json(localUser.getJWT());
+	} catch (err) {
+		res.status(err.status || 500).json(err);
+	}
+});
+
+router.get('/user_exists/:username', async (req, res) => {
+	try {
+		const { username } = req.params;
+		if (!username) return res.json(false);
+
+		const user = await AccountModel.getUser(username);
+		res.json(!!user);
+	} catch (err) {
+		console.error('Error:', err);
+		res.status(err.status || 500).json(err);
+	}
+});
 
 module.exports = router;
