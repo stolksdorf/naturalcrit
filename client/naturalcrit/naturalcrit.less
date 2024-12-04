@@ -1,31 +1,44 @@
 @import 'naturalcrit/styles/core.less';
 
 
-*{
+* {
 	box-sizing: border-box;
 }
 
-.logo{
-	font-size : 4em;
-	color     : black;
-	svg{
-		height       : .9em;
-		margin-right : .2em;
-		cursor       : pointer;
-		fill         : black;
+.logo {
+	font-size: 4em;
+	color: black;
+
+	svg {
+		height: .9em;
+		margin-right: .2em;
+		cursor: pointer;
+		fill: black;
 	}
-	.name{
-		font-family : 'CodeLight';
-		.crit{
-			font-family : 'CodeBold';
+
+	.name {
+		font-family: 'CodeLight';
+
+		.crit {
+			font-family: 'CodeBold';
 		}
 	}
 }
 
-.fa.red{
-	color : @red;
+.fa.red {
+	color: @red;
 }
 
-.fa.green{
-	color : @green;
+.fa.green {
+	color: @green;
+}
+
+button {
+	font-family: 'CodeBold';
+	padding: 12px 20px;
+	margin:10px;
+	background-color: black;
+	color: white;
+	text-transform: uppercase;
+	text-align: center;
 }

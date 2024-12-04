@@ -30,7 +30,7 @@
     "fs-extra": "^3.0.1",
     "jwt-simple": "^0.5.0",
     "klaw": "^2.0.0",
-    "less": "^2.7.1",
+    "less": "^4.2.1",
     "livereload": "^0.6.0",
     "lodash": "^4.17.21",
     "mongoose": "^8.8.3",

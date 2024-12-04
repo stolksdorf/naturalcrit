@@ -58,6 +58,7 @@ router.post('/link', (req, res) => {
 });
 
 router.get('/user_exists/:username', (req, res) => {
+	console.log(req.params);
 	if(!req.params.username) {
 		return res.json(false);
 	}
