@@ -65,12 +65,11 @@ const LoginPage = React.createClass({
 	},
 
 	redirect : function(){
-		if(!this.props.redirect) return window.location.reload();
+		if(!this.props.redirect) return;
 		this.setState({
 			redirecting : true
 		}, () => {window.location = this.props.redirect;});
 	},
-
 
 	login : function(){
 		this.setState({
@@ -93,6 +92,7 @@ const LoginPage = React.createClass({
 				});
 			});
 	},
+	
 	logout : function(e){
 		e.preventDefault();
 		AccountActions.removeSession();

@@ -20,6 +20,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/signup', async (req, res) => {
+	
 	try {
 		const { user, pass } = req.body;
 		const token = await AccountModel.signup(user, pass);
