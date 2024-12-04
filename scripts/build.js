@@ -2,7 +2,7 @@ const label = 'build';
 console.time(label);
 
 const _     = require('lodash');
-const steps = require('vitreum/steps');
+const steps = require('./steps');
 const Proj  = require('./project.json');
 
 Promise.resolve()

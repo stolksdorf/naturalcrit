@@ -26,7 +26,7 @@ const config = require('nconf')
 
 //DB
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/naturalcrit');
+mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/naturalcrit', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.on('error', () => { console.log(">>>ERROR: Run Mongodb.exe ya goof!") });
 
 //// initialize passport
@@ -52,11 +52,11 @@ app.use('/auth', authRoutes);
 
 //Homebrew Redirect
 app.all('/homebrew*', (req, res) => {
-	return res.redirect(302, 'http://homebrewery.naturalcrit.com' + req.url.replace('/homebrew', ''));
+	return res.redirect(302, 'https://homebrewery.naturalcrit.com' + req.url.replace('/homebrew', ''));
 });
 
 
-const render = require('vitreum/steps/render');
+const render = require('./scripts/steps/render.js');
 const templateFn = require('./client/template.js');
 
 app.get('/badges', (req, res)=>{
@@ -78,6 +78,11 @@ app.get('*', (req, res) => {
 });
 
 
-var port = process.env.PORT || 8010;
+var port = process.env.PORT || config.get('web_port') || 8010;
 app.listen(port);
-console.log('Listening on localhost:' + port);
+console.log(`\n\tserver started at: ${new Date().toLocaleString()}`);
+const reset = '\x1b[0m'; // Reset to default style
+const bright = '\x1b[1m'; // Bright (bold) style
+const cyan = '\x1b[36m'; // Cyan color
+const underline = '\x1b[4m'; // Underlined style
+console.log(`\t${bright + cyan}Open in browser: ${reset}${underline + bright + cyan}http://localhost:${port}${reset}\n\n`)

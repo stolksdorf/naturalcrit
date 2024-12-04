@@ -11,7 +11,7 @@ var Main = React.createClass({
 			tools : [
 				{
 					id : 'homebrew',
-					path : 'http://homebrewery.naturalcrit.com',
+					path : 'https://homebrewery.naturalcrit.com',
 					name : 'The Homebrewery',
 					icon : <HomebrewIcon />,
 					desc : 'Make authentic-looking 5e homebrews using Markdown',
