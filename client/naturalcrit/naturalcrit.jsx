@@ -66,7 +66,7 @@ const Naturalcrit = React.createClass({
 	render : function(){
 		return <div className='naturalcrit'>
 			<Router initialUrl={this.props.url}/>
-			<div className={`account ${this.props.user ? '': 'login'}`}>
+			<div className={`accountButton ${this.props.user ? '': 'login'}`}>
 					{this.renderAccount()}
 			</div>
 		</div>
