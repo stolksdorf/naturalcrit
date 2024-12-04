@@ -8,7 +8,7 @@
 .logo {
 	font-size: 4em;
 	color: black;
-	cursor:pointer;
+	cursor: pointer;
 
 	svg {
 		height: .9em;
@@ -36,39 +36,63 @@
 
 button {
 	font-family: 'CodeBold';
+	letter-spacing: 1px;
 	padding: 12px 20px;
-	margin:10px;
+	margin: 10px;
 	background-color: black;
 	color: white;
 	text-transform: uppercase;
 	text-align: center;
-	
+
 	&:hover {
-		background-color:#222;
+		background-color: #222;
 	}
+
 	&:enabled {
-		cursor:pointer;
+		cursor: pointer;
+	}
+
+	&:disabled {
+		background-color: #444;
+		cursor: not-allowed;
+	}
+
+	&:is(.red, .green, .orange):disabled {
+		filter: saturate(40%);
+	}
+
+	&.red {
+		background-color: @red;
+	}
+
+	&.green {
+		background-color: @green;
+	}
+
+	&.orange {
+		background-color: @orange;
 	}
 }
 
-.account {
-	font-family      : 'CodeBold';
-	position         : fixed;
-	top              : 10px;
-	right            : 10px;
-	background-color : black;
-	color            : white;
-	text-transform   : uppercase;
-	text-align       : center;
+.accountButton {
+	font-family: 'CodeBold';
+	letter-spacing: 2px;
+	position: fixed;
+	top: 10px;
+	right: 10px;
+	background-color: black;
+	color: white;
+	text-transform: uppercase;
+	text-align: center;
 
 	&:hover {
-		background-color:#222;
+		background-color: #222;
 	}
 
 	a {
-		display			: block;
-		padding         : 15px 30px;
-		text-decoration : none;
-		color           : white;
+		display: block;
+		padding: 15px 30px;
+		text-decoration: none;
+		color: white;
 	}
 }
