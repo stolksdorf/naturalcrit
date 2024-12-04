@@ -51,13 +51,13 @@ const AccountActions = {
 
 	createSession : (token) => {
 		// MAKE COOKIE WORK WITH LOCALHOST FOR TESTING
-		document.cookie = `nc_session=${token}; max-age=${60*60*24*365};`;
-		//document.cookie = `nc_session=${token}; max-age=${60*60*24*365}; path=/; samesite=lax; domain=${window.domain}`;
+		//document.cookie = `nc_session=${token}; max-age=${60*60*24*365};`;
+		document.cookie = `nc_session=${token}; max-age=${60*60*24*365}; path=/; samesite=lax; domain=${window.domain}`;
 	},
 
 	removeSession : () => {
-		document.cookie = `nc_session=''; max-age=0;`;
-		//document.cookie = `nc_session=;expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;domain=${window.domain};`;
+		//document.cookie = `nc_session=''; max-age=0;`;
+		document.cookie = `nc_session=;expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;domain=${window.domain};`;
 	}
 }
 
