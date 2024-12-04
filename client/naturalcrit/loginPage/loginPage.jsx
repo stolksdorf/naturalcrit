@@ -49,10 +49,11 @@ const LoginPage = React.createClass({
 	},
 
 	handleUserChange : function(e){
+		this.setState({username : e.target.value});
+		if(this.props.user.username) return;
 		this.setState({
 			usernameExists : true,
 			checkingUsername : true,
-			username : e.target.value
 		}, ()=>{ if(this.state.view==='signup') this.checkUsername(); });
 	},
 	handlePassChange : function(e){
@@ -65,7 +66,7 @@ const LoginPage = React.createClass({
 	},
 
 	redirect : function(){
-		if(!this.props.redirect) return;
+		if(!this.props.redirect) return window.location = '/';
 		this.setState({
 			redirecting : true
 		}, () => {window.location = this.props.redirect;});
@@ -244,7 +245,7 @@ const LoginPage = React.createClass({
 
 		return <button
 			className={cx('action', className)}
-			disabled={!this.isValid()}
+			disabled={!this.isValid() || this.props.user.username}
 			onClick={this.handleClick}>
 			<i className={`fa ${icon}`} />
 			{text}
@@ -267,7 +268,7 @@ const LoginPage = React.createClass({
 	},
 	render : function(){
 		return <div className='loginPage'>
-			<div className='logo'>
+			<div className='logo' onClick={()=>{window.location = '/'}}>
 				<NaturalCritIcon />
 				<span className='name'>
 					Natural
