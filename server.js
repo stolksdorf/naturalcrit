@@ -26,7 +26,7 @@ const config = require('nconf')
 
 //DB
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/naturalcrit', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/naturalcrit', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.on('error', () => { console.log(">>>ERROR: Run Mongodb.exe ya goof!") });
 
 //// initialize passport
