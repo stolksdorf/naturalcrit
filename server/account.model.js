@@ -3,7 +3,7 @@ const _ = require('lodash');
 const config = require('nconf');
 
 const jwt = require('jwt-simple');
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt');
 
 const SALT_WORK_FACTOR = 10;
 
@@ -17,12 +17,13 @@ const AccountSchema = mongoose.Schema({
 
 }, { versionKey: false });
 
-AccountSchema.pre('save', async function(next) {
+AccountSchema.pre('save', async function (next) {
 	try {
 		const account = this;
+		console.log(account);
 		if (account.isModified('password')) {
 			const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
-			account.password = await bcrypt.hash(account.password, salt, null);
+			account.password = await bcrypt.hash(account.password, salt);
 		}
 		next();
 	} catch (err) {
