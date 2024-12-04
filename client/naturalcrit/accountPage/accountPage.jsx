@@ -1,4 +1,5 @@
 import React from 'react';
+const AccountActions = require('../account.actions.js');
 
 const AccountPage = (props) => {
 	console.log(props);
@@ -11,13 +12,11 @@ const AccountPage = (props) => {
 
             <button className="logout" onClick={()=>{
                 if(confirm('Are you sure you want to log out?')) {
-                    document.cookie = `nc_session=;expires=Thu, 01 Jan 1970 00:00:01 GMT;`
+                    AccountActions.removeSession();
                     window.location = '/';
                 }
             }}>Log Out</button>
-
         </div>
-
     </div>;
 };
 
