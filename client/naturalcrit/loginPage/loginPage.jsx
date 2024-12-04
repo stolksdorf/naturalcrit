@@ -50,7 +50,7 @@ const LoginPage = React.createClass({
 
 	handleUserChange : function(e){
 		this.setState({username : e.target.value});
-		if(this.props.user.username) return;
+		if(this.props.user && this.props.user.username) return;
 		this.setState({
 			usernameExists : true,
 			checkingUsername : true,
@@ -245,7 +245,7 @@ const LoginPage = React.createClass({
 
 		return <button
 			className={cx('action', className)}
-			disabled={!this.isValid() || this.props.user.username}
+			disabled={!this.isValid() || this.props.user && this.props.user.username}
 			onClick={this.handleClick}>
 			<i className={`fa ${icon}`} />
 			{text}

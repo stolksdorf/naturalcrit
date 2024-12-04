@@ -66,16 +66,6 @@ const HomePage = React.createClass({
 			});
 		},
 
-		renderAccount : function(){
-			let accountLink = '';
-			if(this.props.user && this.props.user.username) {
-				accountLink=<a href='/account'>{this.props.user.username}</a>
-			} else {
-				accountLink=<a href='/login'>Log in</a>
-			};
-			return accountLink;
-		},
-
 		render : function(){
 			return <div className='homePage'>
 				<div className='top'>
@@ -90,9 +80,6 @@ const HomePage = React.createClass({
 				</div>
 				<div className='tools'>
 					{this.renderTools()}
-				</div>
-				<div className='account'>
-					{this.renderAccount()}
 				</div>
 			</div>
 		}

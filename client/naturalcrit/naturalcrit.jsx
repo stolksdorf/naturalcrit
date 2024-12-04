@@ -51,9 +51,24 @@ const Naturalcrit = React.createClass({
 			}
 		});
 	},
+
+	renderAccount : function(){
+		let accountLink = '';
+		if(!this.props.user) return;
+		if(this.props.user && this.props.user.username) {
+			accountLink=<a href='/account'>{this.props.user.username}</a>
+		} else {
+			accountLink=<a href='/login'>Log in</a>
+		};
+		return accountLink;
+	},
+
 	render : function(){
 		return <div className='naturalcrit'>
 			<Router initialUrl={this.props.url}/>
+			<div className={`account ${this.props.user ? '': 'login'}`}>
+					{this.renderAccount()}
+			</div>
 		</div>
 	}
 });
