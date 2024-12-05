@@ -306,6 +306,7 @@ const LoginPage = React.createClass({
 					<label>username</label>
 					<input
 						type='text'
+						title={this.state.view==='signup' ? 'Min 3 characters, and cannot contain ?!¿@ .': ''}
 						onChange={this.handleUserChange}
 						value={this.state.username} />
 					{this.renderUsernameValidation()}
