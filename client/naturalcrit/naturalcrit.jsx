@@ -54,7 +54,6 @@ const Naturalcrit = React.createClass({
 
 	renderAccount : function(){
 		let accountLink = '';
-		if(!this.props.user) return;
 		if(this.props.user && this.props.user.username) {
 			accountLink=<a href='/account'>{this.props.user.username}</a>
 		} else {
