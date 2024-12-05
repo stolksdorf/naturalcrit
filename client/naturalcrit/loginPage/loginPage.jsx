@@ -106,6 +106,16 @@ const LoginPage = React.createClass({
 			processing : true,
 			errors     : null
 		});
+		const regex = /^(?!.*@).{3,}$/;
+
+		if(!regex.test(this.state.username)) {
+			this.setState({
+				processing : false,
+				errors : {username : 'Username must be at least 3 characters long.'}
+			});
+			return;
+		}
+
 		AccountActions.signup(this.state.username, this.state.password)
 			.then((token) => {
 				this.setState({
@@ -256,14 +266,14 @@ const LoginPage = React.createClass({
 		if(!this.props.user) return;
 		let loggedInGoogle = "";
     if (!this.props.user.googleId) {
-      return <div className='loggedin'>
+      return <small>
 				You are logged in as {this.props.user.username}. <a href='' onClick={this.logout}>logout.</a>
-			</div>
+			</small>
     }
 		else {
-			return <div className='loggedin'>
+			return <small>
 				You are logged in via Google as {this.props.user.username}. <a href='' onClick={this.logout}>logout.</a>
-			</div>
+			</small>
 		}
 	},
 	render : function(){
@@ -296,6 +306,7 @@ const LoginPage = React.createClass({
 					<label>username</label>
 					<input
 						type='text'
+						title={this.state.view==='signup' ? 'Min 3 characters, and cannot contain ?!¿@ .': ''}
 						onChange={this.handleUserChange}
 						value={this.state.username} />
 					{this.renderUsernameValidation()}
@@ -318,6 +329,10 @@ const LoginPage = React.createClass({
 				<div className='divider'>⎯⎯ OR ⎯⎯</div>
 				<button	className='google' onClick={this.linkGoogle}></button>
 			</div>
+			<br />
+			<br />
+			<br />
+			<br />
 			{this.renderLoggedIn()}
 		</div>
 	}

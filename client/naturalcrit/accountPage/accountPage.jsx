@@ -7,25 +7,24 @@ const AccountPage = (props) => {
 			<div className="details">
 				<h1>Account Page</h1>
 				<br />
-				<p>Username: {props.user.username}</p>
-
-				<button className="red delete" disabled>
-					Delete account
+				<p>
+					<b>Username:</b> {props.user.username}
+				</p>
+				<br />
+				<button
+					className="logout"
+					onClick={() => {
+						if (confirm('Are you sure you want to log out?')) {
+							AccountActions.removeSession();
+							window.location = '/';
+						}
+					}}>
+					Log Out
 				</button>
-				<button className="orange changeUsername" disabled>
-					Change my username
-				</button>
+				<br />
+				<br />
+				<small>Upcoming features will include account deletion and username changes.</small>
 			</div>
-			<button
-				className="logout"
-				onClick={() => {
-					if (confirm('Are you sure you want to log out?')) {
-						AccountActions.removeSession();
-						window.location = '/';
-					}
-				}}>
-				Log Out
-			</button>
 		</div>
 	);
 };
