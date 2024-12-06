@@ -279,7 +279,7 @@ const LoginPage = React.createClass({
 	
 	render : function(){
 		return <div className='loginPage'>
-			<a className='logo' onClick={()=>{window.location = '/'}}>
+			<a className='logo' href='/'>
 				<NaturalCritIcon />
 				<span className='name'>
 					Natural

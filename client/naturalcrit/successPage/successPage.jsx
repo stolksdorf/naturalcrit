@@ -36,20 +36,20 @@ const SuccessPage = React.createClass({
  	},
  	render : function(){
 		return <div className='loginPage'>
-		<div className='logo'>
-		<NaturalCritIcon />
-				<span className='name'>
-					Natural
-					<span className='crit'>Crit</span>
-				</span>
-			</div>
+		<a className='logo' href='/'>
+			<NaturalCritIcon />
+			<span className='name'>
+				Natural
+				<span className='crit'>Crit</span>
+			</span>
+		</a>
 
-			<div className='content'>
-			<p>Successfully logged in!</p>
-			<br />
-			<br />
-			<p>Redirecting...</p>
-			</div>
+		<div className='content'>
+		<p>Successfully logged in!</p>
+		<br />
+		<br />
+		<p>Redirecting...</p>
+		</div>
 
 	 	</div>
 	}
