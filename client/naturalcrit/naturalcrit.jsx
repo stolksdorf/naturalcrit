@@ -53,10 +53,13 @@ const Naturalcrit = React.createClass({
 	},
 
 	render: function () {
+		console.log(this.props);
+		const isLocal = this.props.domain === ".local.naturalcrit.com";
 		return (
 			<div className="naturalcrit">
 				<Router initialUrl={this.props.url} />
 				<div className={`accountButton ${this.props.user ? '' : 'login'}`}>{this.renderAccount()}</div>
+				<div class="environment"></div>
 			</div>
 		);
 	},
