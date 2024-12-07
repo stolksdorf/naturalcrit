@@ -55,7 +55,6 @@ app.all('/homebrew*', (req, res) => {
 	return res.redirect(302, 'https://homebrewery.naturalcrit.com' + req.url.replace('/homebrew', ''));
 });
 
-
 const render = require('./scripts/steps/render.js');
 const templateFn = require('./client/template.js');
 
@@ -71,7 +70,8 @@ app.get('*', (req, res) => {
 			url : req.url,
 			user : req.user,
 			//authToken : authToken,
-			domain : config.get('domain')
+			domain : config.get('domain'),
+			environment: [process.env.NODE_ENV,process.env.HEROKU_PR_NUMBER]
 		})
 		.then((page) => res.send(page))
 		.catch((err) => console.log(err));

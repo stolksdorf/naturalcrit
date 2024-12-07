@@ -17,6 +17,7 @@ const Naturalcrit = React.createClass({
 			url: '',
 			domain: '',
 			authToken: '',
+			environment: '',
 		};
 	},
 
@@ -52,14 +53,19 @@ const Naturalcrit = React.createClass({
 		return accountLink;
 	},
 
+	renderEnviroment: function () {
+		const env = this.props.environment;
+		if (env[0] === 'production' && !env[1]) return; // Live site
+		if (env[0] === 'production' && env[1]) return <div className="environment">PR - {env[1]}</div>; // PR
+		return <div className="environment">Local</div>; // Local
+	},
+
 	render: function () {
-		console.log(this.props);
-		const isLocal = this.props.domain === ".local.naturalcrit.com";
 		return (
 			<div className="naturalcrit">
 				<Router initialUrl={this.props.url} />
 				<div className={`accountButton ${this.props.user ? '' : 'login'}`}>{this.renderAccount()}</div>
-				<div class="environment"></div>
+				{this.renderEnviroment()}
 			</div>
 		);
 	},
