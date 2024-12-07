@@ -276,15 +276,16 @@ const LoginPage = React.createClass({
 			</small>
 		}
 	},
+	
 	render : function(){
 		return <div className='loginPage'>
-			<div className='logo' onClick={()=>{window.location = '/'}}>
+			<a className='logo' href='/'>
 				<NaturalCritIcon />
 				<span className='name'>
 					Natural
 					<span className='crit'>Crit</span>
 				</span>
-			</div>
+			</a>
 
 
 			<div className='content'>
