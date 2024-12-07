@@ -82,8 +82,8 @@ const Controls = createClass({
 						</div>
 						<input type="file" onChange={this.handleDrop} />
 						<p>
-							Download an icon from <a href="https://thenounproject.com/">The Noun Project</a>, then drag
-							and drop it here.
+							We suggest you download an icon from{' '}
+							<a href="https://thenounproject.com/">The Noun Project</a>, then drag and drop it here.
 						</p>
 					</div>
 				</div>
