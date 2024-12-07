@@ -3,7 +3,7 @@ module.exports = function (vitreum) {
 <!DOCTYPE html>
 <html>
 	<head>
-		<link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+		<link href="//use.fontawesome.com/releases/v6.5.1/css/all.css" rel="stylesheet" type="text/css">
 		<link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700" rel="stylesheet" type="text/css" />
 
 		<!--Favicons for desktop, apple and android apps-->
