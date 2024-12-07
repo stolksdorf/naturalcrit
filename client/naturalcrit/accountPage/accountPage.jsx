@@ -12,7 +12,6 @@ const AccountPage = (props) => {
 				<p>
 					<b>Username:</b> {props.user.username}
 					<br />
-					
 				</p>
 				<br />
 				<button

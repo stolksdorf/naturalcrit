@@ -1,4 +1,4 @@
-module.exports = function(vitreum){
+module.exports = function (vitreum) {
 	return `
 <!DOCTYPE html>
 <html>
@@ -21,7 +21,4 @@ module.exports = function(vitreum){
 	${vitreum.js}
 </html>
 `;
-}
-
-
-
+};

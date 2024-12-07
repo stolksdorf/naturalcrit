@@ -1,47 +1,58 @@
+.controls {
+	width: 500px;
 
-.controls{
-	width : 500px;
-	.field{
-		display       : flex;
-		margin-bottom : 10px;
-		label{
-			vertical-align : top;
-			width          : 70px;
-			font-size      : 0.8em;
-			font-weight    : 800;
+	.field {
+		display: flex;
+		margin-bottom: 10px;
+
+		label {
+			vertical-align: top;
+			width: 70px;
+			font-size: 0.8em;
+			font-weight: 800;
 		}
-		.value, .slider-picker{
-			flex-grow : 1;
+
+		.value,
+		.slider-picker {
+			flex-grow: 1;
 		}
-		textarea.value, input.value{
-			padding     : 4px;
-			font-family : 'Open Sans';
-			font-size   : 1em;
-			rows        : 3;
+
+		textarea.value,
+		input.value {
+			padding: 4px;
+			font-family: 'Open Sans';
+			font-size: 1em;
+			rows: 3;
 		}
-		&.svg{
+
+		&.svg {
 			margin-left: 20px;
-			.dropZone{
+
+			.dropZone {
 				margin-left: -1px;
-				padding      : 20px 10px;
-				font-size    : 0.8em;
-				font-weight  : 800;
-				text-align   : center;
-				border       : 1px #999 dashed;
-				border-width : 8px;
-				i{
-					font-size : 3em;
-					color     : #999
+				padding: 20px 10px;
+				font-size: 0.8em;
+				font-weight: 800;
+				text-align: center;
+				border: 1px #999 dashed;
+				border-width: 8px;
+
+				i {
+					font-size: 3em;
+					color: #999
 				}
-				&.hover{
-					background-color : #ddd;
+
+				&.hover {
+					background-color: #ddd;
 				}
 			}
-			.value>p{
-				margin-top : 10px;
-				font-size  : 0.7em;
+
+			.value>p {
+				margin-top: 10px;
+				font-size: 0.7em;
 			}
-			input{
+
+			input {
 				margin-top: 10px;
 			}
 		}

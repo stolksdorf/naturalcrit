@@ -1,122 +1,175 @@
+.homePage {
+	height: 100vh;
+	background-color: white;
 
-.homePage{
-	height           : 100vh;
-	background-color : white;
-	.top{
+	.top {
 		.fadeInTop(1s);
 		.delay(0.5);
-		margin-bottom : 100px;
-		padding-top   : 100px;
-		text-align    : center;
+		margin-bottom: 100px;
+		padding-top: 100px;
+		text-align: center;
 
-		p{
-			margin-top : 10px;
-			font-size  : 1.3em;
-			font-style : italic;
-			color      : @grey;
+		p {
+			margin-top: 10px;
+			font-size: 1.3em;
+			font-style: italic;
+			color: @grey;
 		}
 	}
-	.tools{
-		width      : 100%;
-		text-align : center;
-		.tool{
+
+	.tools {
+		width: 100%;
+		text-align: center;
+
+		.tool {
 			.sequentialDelay(0.5s, 1s);
 			.fadeInDown(1s);
 			.keep();
-			display         : inline-block;
-			vertical-align  : top;
-			cursor          : pointer;
-			opacity         : 0;
-			color           : black;
-			text-align      : center;
-			text-decoration : none;
-			&+.tool{
-				border-left : 1px solid #666;
+			display: inline-block;
+			vertical-align: top;
+			cursor: pointer;
+			opacity: 0;
+			color: black;
+			text-align: center;
+			text-decoration: none;
+
+			&+.tool {
+				border-left: 1px solid #666;
 			}
-			.badges svg{
+
+			.badges svg {
 				width: 110px;
 				transform: translateY(-8px);
 			}
-			.content{
+
+			.content {
 				.addSketch(360px);
 				.animateAll(0.5s);
-				position : relative;
-				width    : 320px;
-				padding  : 35px;
-				&:hover{
-					svg, h2{
+				position: relative;
+				width: 320px;
+				padding: 35px;
+
+				&:hover {
+
+					svg,
+					h2 {
 						.transform(scale(1.3));
 					}
 				}
-				h2{
+
+				h2 {
 					.animateAll(0.5s);
-					font-family : 'CodeBold';
-					font-size   : 2em;
+					font-family: 'CodeBold';
+					font-size: 2em;
 				}
-				p{
-					max-width   : 300px;
-					margin      : 20px auto;
-					line-height : 1.5em;
+
+				p {
+					max-width: 300px;
+					margin: 20px auto;
+					line-height: 1.5em;
 				}
-				svg{
+
+				svg {
 					.animateAll(0.5s);
-					height        : 9em;
-					margin-bottom : 0.8em;
+					height: 9em;
+					margin-bottom: 0.8em;
 				}
 			}
-			.content:hover{
-				background-color : fade(@teal, 20%);
+
+			.content:hover {
+				background-color: fade(@teal, 20%);
 			}
+
 			//Beta styles
-			&.beta{
-				overflow : hidden;
-				cursor   : initial;
-				.content{
-					&:after{
+			&.beta {
+				overflow: hidden;
+				cursor: initial;
+
+				.content {
+					&:after {
 						.animateAll();
 						.transform(rotate(45deg));
-						content          : "beta!";
-						position         : absolute;
-						display          : block;
-						top              : -12px;
-						right            : -46px;
-						width            : 36%;
-						padding-top      : 27px;
-						padding-bottom   : 15px;
+						content: "beta!";
+						position: absolute;
+						display: block;
+						top: -12px;
+						right: -46px;
+						width: 36%;
+						padding-top: 27px;
+						padding-bottom: 15px;
 						//opacity          : 0;
-						background-color : fade(@grey, 50%);
-						font-size        : 1em;
-						font-weight      : 800;
-						text-align       : center;
-						text-transform   : uppercase;
+						background-color: fade(@grey, 50%);
+						font-size: 1em;
+						font-weight: 800;
+						text-align: center;
+						text-transform: uppercase;
 					}
 				}
 			}
 		}
 	}
 }
-.addSketch(@length, @color : black){
-	path, line, polyline, circle, rect, polygon {
+
+.addSketch(@length, @color : black) {
+
+	path,
+	line,
+	polyline,
+	circle,
+	rect,
+	polygon {
 		.sketch(@length, @color, 4s);
-		stroke-dasharray  : @length;
-		stroke-dashoffset : 0px;
-		stroke            : @color;
-		stroke-width      : 0.5px;
-		fill              : @color;
+		stroke-dasharray: @length;
+		stroke-dashoffset: 0px;
+		stroke: @color;
+		stroke-width: 0.5px;
+		fill: @color;
 		//.animateAll(3s);
 	}
 }
-.sketch(@length, @color : black, @duration : 3s, @easing : @defaultEasing){
+
+.sketch(@length, @color : black, @duration : 3s, @easing : @defaultEasing) {
 	.createAnimation(sketch, @duration, @easing);
-	.sketchKeyFrames(){
-		0% { stroke-dashoffset : @length; fill: transparent;}
-		50% { stroke-dashoffset : @length; fill: transparent;}
-		80% { stroke-dashoffset : 0px; fill: transparent;}
-		100% { stroke-dashoffset : 0px; fill:@color;}
+
+	.sketchKeyFrames() {
+		0% {
+			stroke-dashoffset: @length;
+			fill: transparent;
+		}
+
+		50% {
+			stroke-dashoffset: @length;
+			fill: transparent;
+		}
+
+		80% {
+			stroke-dashoffset: 0px;
+			fill: transparent;
+		}
+
+		100% {
+			stroke-dashoffset: 0px;
+			fill: @color;
+		}
 	}
-	@-webkit-keyframes sketch {.sketchKeyFrames();}
-	@-moz-keyframes sketch {.sketchKeyFrames();}
-	@-ms-keyframes sketch {.sketchKeyFrames();}
-	@-o-keyframes sketch {.sketchKeyFrames();}
-	@keyframes sketch {.sketchKeyFrames();}
+
+	@-webkit-keyframes sketch {
+		.sketchKeyFrames();
+	}
+
+	@-moz-keyframes sketch {
+		.sketchKeyFrames();
+	}
+
+	@-ms-keyframes sketch {
+		.sketchKeyFrames();
+	}
+
+	@-o-keyframes sketch {
+		.sketchKeyFrames();
+	}
+
+	@keyframes sketch {
+		.sketchKeyFrames();
+	}
 }
