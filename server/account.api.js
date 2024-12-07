@@ -20,7 +20,6 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/signup', async (req, res) => {
-	
 	try {
 		const { user, pass } = req.body;
 		const token = await AccountModel.signup(user, pass);
@@ -62,5 +61,23 @@ router.get('/user_exists/:username', async (req, res) => {
 		res.status(err.status || 500).json(err);
 	}
 });
+
+router.put('/rename', async (req, res) => {
+    try {
+        const { username, newUsername } = req.body;
+
+        const user = await AccountModel.getUser(username);
+        if (!user) return res.status(404).json({ error: 'User not found' });
+
+        user.username = newUsername;
+        await user.save();
+
+        res.json(true);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 
 module.exports = router;

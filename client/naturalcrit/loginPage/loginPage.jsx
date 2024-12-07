@@ -33,11 +33,14 @@ const LoginPage = React.createClass({
 		};
 	},
 	componentDidMount: function () {
-		window.document.onkeypress = (e) => {
-			if (e.code == 'Enter') this.handleClick();
-		};
-
+		window.document.addEventListener('keydown', (e) => {
+			if (e.code === 'Enter') this.handleClick();
+		});
 		this.handleRedirectURL();
+	},
+	
+	componentWillUnmount: function () {
+		window.document.removeEventListener('keydown', this.handleKeyPress);
 	},
 
 	handleRedirectURL: function () {
@@ -313,7 +316,7 @@ const LoginPage = React.createClass({
 			<div className="loginPage">
 				<NaturalCritIcon />
 
-				<div className="content">
+				<div className="authForm">
 					<div className="switchView">
 						<div
 							className={cx('login', { 'selected': this.state.view === 'login' })}
@@ -328,8 +331,8 @@ const LoginPage = React.createClass({
 						</div>
 					</div>
 
-					<div className="field user">
-						<label>username</label>
+					<label className="field user">
+						username
 						<input
 							type="text"
 							title={this.state.view === 'signup' ? 'Min 3 characters, and cannot contain ?!¿@ .' : ''}
@@ -340,16 +343,15 @@ const LoginPage = React.createClass({
 						{this.state.usernameExists && !this.state.checkingUsername && this.state.view === 'signup' ? (
 							<div className="userExists">User with that name already exists</div>
 						) : null}
-					</div>
+					</label>
 
-					<div className="field password">
-						<label>password</label>
+					<label className="field password">
+						password
 						<input
 							type={cx({ text: this.state.visible, password: !this.state.visible })}
 							onChange={this.handlePassChange}
 							value={this.state.password}
 						/>
-
 						<div
 							className="control"
 							onClick={() => {
@@ -362,7 +364,7 @@ const LoginPage = React.createClass({
 								})}
 							/>
 						</div>
-					</div>
+					</label>
 					{this.renderErrors()}
 					{this.renderButton()}
 					<div className="divider">⎯⎯ OR ⎯⎯</div>

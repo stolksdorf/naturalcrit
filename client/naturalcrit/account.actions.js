@@ -2,6 +2,7 @@ const request = require('superagent');
 
 const AccountActions = {
 	login: (user, pass) => {
+		console.log('login');
 		return new Promise((resolve, reject) => {
 			request
 				.post('/login')
@@ -51,12 +52,28 @@ const AccountActions = {
 				});
 		});
 	},
+
+	rename: (username, newUsername) => {
+		return new Promise((resolve, reject) => {
+			request
+				.put('/rename')
+				.send({ username, newUsername })
+				.end((err, res) => {
+					if (err) return reject(err);
+					return resolve(res.body);
+				});
+		});
+	},
+	
+
 	createSession: (token) => {
+		console.log('creating new session');
 		const domain = window.domain === '.local.naturalcrit.com' ? 'localhost' : window.domain;
 		document.cookie = `nc_session=${token}; max-age=${60 * 60 * 24 * 365}; path=/; samesite=lax; domain=${domain};`;
 	},
 
 	removeSession: () => {
+		console.log('removing session');
 		const domain = window.domain === '.local.naturalcrit.com' ? 'localhost' : window.domain;
 		document.cookie = `nc_session=, expires=Thu, 01 Jan 1970 00:00:01 GMT, samesite=lax, domain=${domain}`;
 	},
