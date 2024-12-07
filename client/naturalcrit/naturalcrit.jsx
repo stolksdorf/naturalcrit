@@ -1,12 +1,9 @@
 const React = require('react');
-const _     = require('lodash');
-const cx    = require('classnames');
 
 const CreateRouter = require('pico-router').createRouter;
 
 //Pages
 const HomePage = require('./homePage/homePage.jsx');
-const SignupPage = require('./signupPage/signupPage.jsx');
 const AccountPage = require('./accountPage/accountPage.jsx');
 const LoginPage = require('./loginPage/loginPage.jsx');
 const SuccessPage = require('./successPage/successPage.jsx');
