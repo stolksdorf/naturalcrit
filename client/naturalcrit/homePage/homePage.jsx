@@ -2,7 +2,7 @@ const React = require('react');
 const _     = require('lodash');
 const cx    = require('classnames');
 
-const NaturalCritIcon = require('naturalcrit/svg/naturalcrit.svg.jsx');
+const NaturalCritIcon = require('naturalcrit/components/naturalcritLogo.jsx');
 
 const HomebrewIcon = require('naturalcrit/svg/homebrew.svg.jsx');
 const TPKIcon = require('naturalcrit/svg/tpk.svg.jsx');
@@ -69,13 +69,7 @@ const HomePage = React.createClass({
 		render : function(){
 			return <div className='homePage'>
 				<div className='top'>
-					<div className='logo'>
-						<NaturalCritIcon />
-						<span className='name'>
-							Natural
-							<span className='crit'>Crit</span>
-						</span>
-					</div>
+					<NaturalCritIcon />
 					<p>Top-tier tools for the discerning DM</p>
 				</div>
 				<div className='tools'>

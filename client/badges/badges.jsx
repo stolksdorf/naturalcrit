@@ -4,7 +4,7 @@ const createClass = require('create-react-class');
 
 const BadgeRender = require('./badgeRender/badgeRender.jsx');
 const Controls = require('./controls/controls.jsx');
-const NaturalCritIcon = require('naturalcrit/svg/naturalcrit.svg.jsx');
+const NaturalCritIcon = require('naturalcrit/components/naturalcritLogo.jsx');
 
 const Badges = createClass({
 	getDefaultProps: function() {
@@ -26,13 +26,8 @@ const Badges = createClass({
 
 	render: function(){
 		return <div className='badges'>
-			<a className='logo' href='/'>
-				<NaturalCritIcon />
-				<span className='name'>
-					Natural
-					<span className='crit'>Crit</span>
-				</span>
-			</a>
+			<NaturalCritIcon />
+
 			<h1>D&D Achievement Badges</h1>
 			<p>Want to give your players a little something extra? Create a custom achivement badge just for them!</p>
 			<div className='content'>

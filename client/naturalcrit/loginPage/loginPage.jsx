@@ -2,7 +2,7 @@ const React = require('react');
 const _     = require('lodash');
 const cx    = require('classnames');
 
-const NaturalCritIcon = require('naturalcrit/svg/naturalcrit.svg.jsx');
+const NaturalCritIcon = require('naturalcrit/components/naturalcritLogo.jsx');
 const AccountActions = require('../account.actions.js');
 
 const RedirectLocation = 'NC-REDIRECT-URL';
@@ -279,14 +279,7 @@ const LoginPage = React.createClass({
 	
 	render : function(){
 		return <div className='loginPage'>
-			<a className='logo' href='/'>
-				<NaturalCritIcon />
-				<span className='name'>
-					Natural
-					<span className='crit'>Crit</span>
-				</span>
-			</a>
-
+			<NaturalCritIcon />
 
 			<div className='content'>
 				<div className='switchView'>

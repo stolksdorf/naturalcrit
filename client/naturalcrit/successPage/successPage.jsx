@@ -1,6 +1,6 @@
 const React = require('react');
 
-const NaturalCritIcon = require('naturalcrit/svg/naturalcrit.svg.jsx');
+const NaturalCritIcon = require('naturalcrit/components/naturalcritLogo.jsx');
 
 const RedirectLocation = 'NC-REDIRECT-URL';
 
@@ -36,13 +36,7 @@ const SuccessPage = React.createClass({
  	},
  	render : function(){
 		return <div className='loginPage'>
-		<a className='logo' href='/'>
-			<NaturalCritIcon />
-			<span className='name'>
-				Natural
-				<span className='crit'>Crit</span>
-			</span>
-		</a>
+		<NaturalCritIcon />
 
 		<div className='content'>
 		<p>Successfully logged in!</p>
