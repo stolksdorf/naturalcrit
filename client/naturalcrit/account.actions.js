@@ -60,11 +60,17 @@ const AccountActions = {
 				.send({ username, newUsername })
 				.end((err, res) => {
 					if (err) return reject(err);
-					return resolve(res.body);
+
+					request
+						.put('https://homebrewery.naturalcrit.com/api/user/' + username + '/rename-brews')
+						.send({ newUsername })
+						.end((err, res) => {
+							if (err) return reject(err);
+							return resolve(res.body);
+						});
 				});
 		});
 	},
-	
 
 	createSession: (token) => {
 		console.log('creating new session');
