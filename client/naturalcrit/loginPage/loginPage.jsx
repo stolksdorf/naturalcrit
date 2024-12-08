@@ -121,15 +121,6 @@ const LoginPage = React.createClass({
 			processing: true,
 			errors: null,
 		});
-		const regex = /^(?!.*@).{3,}$/;
-
-		if (!regex.test(this.state.username)) {
-			this.setState({
-				processing: false,
-				errors: { username: 'Username must be at least 3 characters long.' },
-			});
-			return;
-		}
 
 		AccountActions.signup(this.state.username, this.state.password)
 			.then((token) => {
@@ -153,6 +144,15 @@ const LoginPage = React.createClass({
 
 	checkUsername: function () {
 		if (this.state.username === '') return;
+		const regex = /^(?!.*@).{3,}$/;
+
+		if (!regex.test(this.state.username)) {
+			this.setState({
+				processing: false,
+				errors: { username: 'Username must be at least 3 characters long.' },
+			});
+			return;
+		}
 		this.setState({
 			checkingUsername: true,
 		});
@@ -312,6 +312,7 @@ const LoginPage = React.createClass({
 	},
 
 	render: function () {
+		console.log(this.props.redirect);
 		return (
 			<div className="loginPage">
 				<NaturalCritIcon />

@@ -1,7 +1,7 @@
 const React = require('react');
 const AccountActions = require('../account.actions.js');
 const NaturalCritIcon = require('naturalcrit/components/naturalcritLogo.jsx');
-const LoginForm = require('../loginPage/loginForm.jsx');
+const RenameForm = require('../loginPage/renameForm.jsx');
 
 class AccountPage extends React.Component {
 	constructor(props) {
@@ -27,7 +27,7 @@ class AccountPage extends React.Component {
 		}).catch(error => {
 			console.error('Login failed', error);
 		});
-	}	
+	}
 
 	render() {
 		return (
@@ -57,10 +57,9 @@ class AccountPage extends React.Component {
 					<br />
 					<br />
 					{this.state.showLogin && (
-						<LoginForm 
+						<RenameForm 
 							user={this.props.user} 
-							renaming={true} 
-							onRenameSuccess={this.handleRenameSuccess} // Pass the function
+							onRenameSuccess={this.handleRenameSuccess}
 						/>
 					)}
 					<small>Upcoming features will include account deletion and username changes.</small>

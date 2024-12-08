@@ -2,7 +2,6 @@
     width: 400px;
     margin: 0 auto;
     padding: 20px;
-    padding-top: 50px;
 
     .switchView {
         width: 100%;
@@ -36,9 +35,9 @@
     }
 
     .field {
-        display:block;
+        display: block;
         position: relative;
-        height:fit-content;
+        height: fit-content;
         margin: 20px 0px;
         text-align: left;
         font-size: 10px;
@@ -55,16 +54,26 @@
 
         .control {
             position: absolute;
-            display: block;
-            right: -40px;
-            bottom: 0px;
-            height: 46px;
+            display: grid;
+            place-items: center;
+            right: 0;
+            bottom: 0;
+            height: calc(100% - 1lh);
             width: 40px;
+            translate: 100%;
             text-align: center;
+            font-size:15px;
+        }
 
-            i {
-                margin-top: 15px;
-            }
+        .userExists {
+            position: absolute;
+            display: grid;
+            place-items: center;
+            right: -50px;
+            bottom: 0;
+            height: calc(100% - 1lh);
+            width: fit-content;
+            translate: 100%;
         }
 
         &.password .control {
@@ -107,6 +116,7 @@
             font-size: 1.5em;
         }
     }
+
     button.google {
         cursor: pointer;
         width: 191px;
