@@ -26,6 +26,9 @@ const Naturalcrit = React.createClass({
 
 		Router = CreateRouter({
 			'/account': (args, query) => {
+				if (!this.props.user || !this.props.user.username) {
+					return <LoginPage redirect={this.props.url} user={this.props.user} />;
+				}
 				return <AccountPage user={this.props.user} />;
 			},
 			'/login': (args, query) => {
