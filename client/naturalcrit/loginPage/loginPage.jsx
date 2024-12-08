@@ -97,7 +97,7 @@ const LoginPage = React.createClass({
 						errors: null,
 						success: true,
 					},
-					this.redirect
+					//this.redirect
 				);
 			})
 			.catch((err) => {
