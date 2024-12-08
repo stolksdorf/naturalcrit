@@ -67,12 +67,21 @@ const RenameForm = React.createClass({
 	},
 
 	login: function () {
+		const regex = /^(?!.*@).{3,}$/;
+
+		if (!regex.test(this.state.newUsername)) {
+			this.setState({
+				processing: false,
+				errors: { msg: 'Username must be at least 3 characters long and not include @!?.' },
+			});
+			return;
+		}
 		if (!confirm('Are you sure you want to rename your account?')) return;
 		this.setState({
 			processing: true,
 			errors: null,
 		});
-		AccountActions.login(this.props.username, this.state.password)
+		AccountActions.login(this.props.user.username, this.state.password)
 			.then((token) => {
 				this.setState({
 					processing: false,
@@ -106,15 +115,7 @@ const RenameForm = React.createClass({
 
 	checkUsername: function () {
 		if (this.state.newUsername === '') return;
-		const regex = /^(?!.*@).{3,}$/;
 
-		if (!regex.test(this.state.newUsername)) {
-			this.setState({
-				processing: false,
-				errors: { username: 'Username must be at least 3 characters long.' },
-			});
-			return;
-		}
 		this.setState({
 			checkingUsername: true,
 		});
@@ -131,15 +132,6 @@ const RenameForm = React.createClass({
 	}, 1000),
 
 	isValid: function () {
-		console.log(
-			this.state.processing,
-			'should be false, ',
-			this.state.newUsername,
-			' must be over 3 characters and not exist, does it exist? ',
-			this.state.usernameExists,
-			'and there must be a password, is there? ',
-			this.state.password
-		);
 		if (this.state.processing) return false;
 		return this.state.newUsername && this.state.password && !this.state.usernameExists;
 	},
@@ -176,14 +168,11 @@ const RenameForm = React.createClass({
 		} else {
 			className = 'signup';
 			text = 'Rename';
-			icon = 'fa-user-plus';
+			icon = 'fa-signature';
 		}
 
 		return (
-			<button
-				className={cx('action', className)}
-				disabled={!this.isValid()}
-				onClick={this.login}>
+			<button className={cx('action', className)} disabled={!this.isValid()} onClick={this.login}>
 				<i className={`fa ${icon}`} />
 				{text}
 			</button>
