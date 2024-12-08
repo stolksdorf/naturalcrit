@@ -27,21 +27,21 @@ const LoginForm = React.createClass({
 			success: false,
 		};
 	},
-    componentDidMount: function () {
-        window.document.addEventListener('keydown', (e) => {
-            if (e.code === 'Enter') this.login();
-        });
-    },
-    
-    componentWillUnmount: function () {
-        window.document.removeEventListener('keydown', this.handleKeyPress);
-    },
-    
+	componentDidMount: function () {
+		window.document.addEventListener('keydown', (e) => {
+			if (e.code === 'Enter') this.login();
+		});
+	},
+
+	componentWillUnmount: function () {
+		window.document.removeEventListener('keydown', this.handleKeyPress);
+	},
+
 	handleUserChange: function (e) {
 		this.setState({ username: e.target.value });
 	},
 	handleNewUserChange: function (e) {
-		this.setState({ newUsername: e.target.value });
+		this.setState({ username:this.props.user.username, newUsername: e.target.value });
 	},
 
 	handlePassChange: function (e) {
@@ -62,9 +62,8 @@ const LoginForm = React.createClass({
 				});
 				if (this.props.renaming && this.state.newUsername) {
 					AccountActions.rename(this.state.username, this.state.newUsername)
-						.then(() => {
-                            console.log('renaming successfull, calling parent func');
-							this.props.onRenameSuccess(this.state.newUsername, this.state.password); // Call the parent function
+						.then((res) => {
+							this.props.onRenameSuccess(this.state.newUsername, this.state.password);
 						})
 						.catch((err) => {
 							console.log(err);
@@ -107,11 +106,12 @@ const LoginForm = React.createClass({
 	render: function () {
 		return (
 			<div className="authForm">
-				<label className="field user">
-					{this.props.renaming && 'Old'} username
-					<input type="text" onChange={this.handleUserChange} value={this.state.username} />
-				</label>
-				{this.props.renaming && (
+				{!this.props.renaming ? (
+					<label className="field user">
+						username
+						<input type="text" onChange={this.handleUserChange} value={this.state.username} />
+					</label>
+				) : (
 					<label className="field user">
 						new username
 						<input type="text" onChange={this.handleNewUserChange} value={this.state.newUsername} />

@@ -23,14 +23,13 @@ class AccountPage extends React.Component {
 	
 		AccountActions.login(newUsername, password).then(() => {
 			this.setState({ showLogin: false });
-			window.location.reload();  // Only reload after login is successful
+			window.location.reload();
 		}).catch(error => {
 			console.error('Login failed', error);
 		});
 	}	
 
 	render() {
-		console.log(this.props.user);
 		return (
 			<div className="accountPage">
 				<NaturalCritIcon />

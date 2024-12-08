@@ -2,7 +2,6 @@ const request = require('superagent');
 
 const AccountActions = {
 	login: (user, pass) => {
-		console.log('login');
 		return new Promise((resolve, reject) => {
 			request
 				.post('/login')
@@ -54,21 +53,22 @@ const AccountActions = {
 	},
 
 	rename: (username, newUsername) => {
+		//.put(`http://localhost:8000/api/user/rename`) for local purposes
+
 		return new Promise((resolve, reject) => {
 			request
 				.put('/rename')
 				.send({ username, newUsername })
 				.end((err, res) => {
 					if (err) return reject(err);
-
 					request
-						.put('https://homebrewery.naturalcrit.com/api/user/' + username + '/rename-brews')
-						.send({ newUsername })
+						.put(`https://homebrewery.naturalcrit.com/api/user/rename`)
+						.set('Homebrewery-Version', '3.16.1')
+						.send({ username, newUsername })
 						.end((err, res) => {
 							if (err) return reject(err);
 							return resolve(res.body);
 						});
-					return resolve(res.body);
 				});
 		});
 	},
