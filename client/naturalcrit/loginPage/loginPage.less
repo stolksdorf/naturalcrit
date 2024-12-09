@@ -2,16 +2,61 @@
 	text-align: center;
 	padding-top: 30px;
 
-	.authForm {
+	.content {
+		width: 400px;
+		margin: 0 auto;
+		padding: 20px;
 		padding-top: 50px;
-	}
 
-	.divider {
-		font-size: 1em;
-		font-weight: 800;
-		color: black;
-		text-transform: uppercase;
-		padding: 12px 20px 10px;
+		.switchView {
+			width: 100%;
+
+			&>div {
+				.animate(background-color);
+				display: inline-block;
+				width: 50%;
+				padding: 10px;
+				cursor: pointer;
+				background-color: transparent;
+				font-size: 0.8em;
+				font-weight: 800;
+				text-transform: uppercase;
+
+				i {
+					vertical-align: middle;
+					font-size: 2em;
+				}
+			}
+
+			.login:hover,
+			.login.selected {
+				background-color: fade(@blue, 20%);
+			}
+
+			.signup:hover,
+			.signup.selected {
+				background-color: fade(@green, 20%);
+			}
+		}
+
+		button.google {
+			cursor: pointer;
+			width: 191px;
+			height: 46px;
+			border: none;
+			outline: none;
+			background-color: unset;
+			background-image: url('../assets/naturalcrit/styles/btn_google_signin_light_normal_web.png');
+			background-size: contain;
+	
+			&:hover {
+				background-image: url('../assets/naturalcrit/styles/btn_google_signin_light_hover_web.png');
+			}
+	
+			&:focus {
+				background-image: url('../assets/naturalcrit/styles/btn_google_signin_light_pressed_web.png');
+			}
+		}
 	}
 
 	+.accountButton.login {

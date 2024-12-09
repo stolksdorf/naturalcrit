@@ -1,32 +1,58 @@
 const React = require('react');
 const AccountActions = require('../account.actions.js');
 const NaturalCritIcon = require('naturalcrit/components/naturalcritLogo.jsx');
-const RenameForm = require('../loginPage/renameForm.jsx');
+const AuthForm = require('../loginPage/authForm.jsx'); // Import AuthForm
 
 class AccountPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showLogin: false
+			showRenameForm: false,
+			processing: false,
+			errors: null,
 		};
-		this.toggleLogin = this.toggleLogin.bind(this);
-		this.handleRenameSuccess = this.handleRenameSuccess.bind(this); // Bind method
+		this.handleRename = this.handleRename.bind(this); // Bind handleRename here
+		this.toggleRenameForm = this.toggleRenameForm.bind(this); // Bind the method here
 	}
 
-	toggleLogin() {
-		this.setState({ showLogin: !this.state.showLogin });
+	toggleRenameForm() {
+		this.setState({ showRenameForm: !this.state.showRenameForm });
 	}
 
-	handleRenameSuccess(newUsername, password) {
-		console.log('handling rename, ', newUsername, password);
-		AccountActions.removeSession();
-	
-		AccountActions.login(newUsername, password).then(() => {
-			this.setState({ showLogin: false });
-			window.location.reload();
-		}).catch(error => {
-			console.error('Login failed', error);
+	handleRename(newUsername, password) {
+		const regex = /^(?!.*@).{3,}$/;
+
+		if (!regex.test(newUsername)) {
+			this.setState({
+				processing: false,
+				errors: { msg: 'Username must be at least 3 characters long and not include @!?.' },
+			});
+			return Promise.reject('Invalid username');
+		}
+
+		//if (!confirm('Are you sure you want to rename your account?')) return Promise.reject('User canceled rename');
+
+		this.setState({
+			processing: true,
+			errors: null,
 		});
+
+		return AccountActions.rename(this.props.user.username, newUsername, password)
+			.then(() => {
+				this.setState({
+					processing: false,
+					errors: null,
+					showRenameForm: false,
+				});
+			})
+			.catch((err) => {
+				console.log(err);
+				this.setState({
+					processing: false,
+					errors: err,
+				});
+				return Promise.reject(err);
+			});
 	}
 
 	render() {
@@ -51,17 +77,12 @@ class AccountPage extends React.Component {
 						}}>
 						Log Out
 					</button>
-					<button className="rename" onClick={this.toggleLogin}>
+					<button className="rename" onClick={this.toggleRenameForm}>
 						Change my username
 					</button>
 					<br />
 					<br />
-					{this.state.showLogin && (
-						<RenameForm 
-							user={this.props.user} 
-							onRenameSuccess={this.handleRenameSuccess}
-						/>
-					)}
+					{this.state.showRenameForm && <AuthForm actionType="rename" onSubmit={this.handleRename} />}
 					<small>Upcoming features will include account deletion and username changes.</small>
 				</div>
 			</div>

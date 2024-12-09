@@ -40,6 +40,11 @@ const AccountActions = {
 		});
 	},
 
+	validateUsername: (username) => {
+		const regex = /^(?!.*@).{3,}$/;
+		return regex.test(username);
+	},
+
 	checkUsername: (username) => {
 		return new Promise((resolve, reject) => {
 			request
@@ -51,26 +56,37 @@ const AccountActions = {
 				});
 		});
 	},
-
-	rename: (username, newUsername) => {
-		//.put(`http://localhost:8000/api/user/rename`) for local purposes
-
-		return new Promise((resolve, reject) => {
-			request
-				.put('/rename')
-				.send({ username, newUsername })
-				.end((err, res) => {
-					if (err) return reject(err);
+	rename: (username, newUsername, password) => {
+		console.log('attempting rename');
+		return AccountActions.login(username, password)
+			.then(() => {
+				return new Promise((resolve, reject) => {
 					request
-						.put(`https://homebrewery.naturalcrit.com/api/user/rename`)
-						.set('Homebrewery-Version', '3.16.1')
+						.put('/rename')
 						.send({ username, newUsername })
 						.end((err, res) => {
 							if (err) return reject(err);
-							return resolve(res.body);
+							console.log('correctly renamed, now relogging');
+							AccountActions.removeSession();
+							AccountActions.login(newUsername, password).then(() => {
+								setTimeout(() => {
+									window.location.reload();
+								}, 500);
+							});
+							request
+								.put('https://homebrewery.naturalcrit.com/api/user/rename')
+								.set('Homebrewery-Version', '3.16.1')
+								.send({ username, newUsername })
+								.end((err, res) => {
+									if (err) return reject(err);
+									return resolve(res.body);
+								});
 						});
 				});
-		});
+			})
+			.catch((err) => {
+				return Promise.reject(err);
+			});
 	},
 
 	createSession: (token) => {
