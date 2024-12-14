@@ -74,7 +74,7 @@ const AccountActions = {
 								}, 500);
 							});
 							request
-								.put('https://homebrewery-pr-3942.herokuapp.com/api/user/rename')
+								.put('https://homebrewery.naturalcrit.com/api/user/rename')
 								.set('Homebrewery-Version', '3.16.1')
 								.send({ username, newUsername })
 								.end((err, res) => {
@@ -91,12 +91,12 @@ const AccountActions = {
 
 	createSession: (token) => {
 		//if working on local or a deployment, remove the domain attribute
-		document.cookie = `nc_session=${token}; max-age=${60 * 60 * 24 * 365}; path=/; samesite=lax; domain="";`;
+		document.cookie = `nc_session=${token}; max-age=${60 * 60 * 24 * 365}; path=/; samesite=lax; domain=".naturalcrit.com";`;
 	},
 
 	removeSession: () => {
 		//if working on local or a deployment, remove the domain attribute
-		document.cookie = `nc_session=; expires=Thu; 01 Jan 1970 00:00:01 GMT; samesite=lax; domain=""`;
+		document.cookie = `nc_session=; expires=Thu; 01 Jan 1970 00:00:01 GMT; samesite=lax; domain=".naturalcrit.com"`;
 	},
 };
 
