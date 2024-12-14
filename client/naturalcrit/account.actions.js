@@ -56,7 +56,7 @@ const AccountActions = {
 
 	removeSession : () => {
 		const domain = window.domain === '.local.naturalcrit.com' ? 'localhost' : window.domain;
-		document.cookie = `nc_session=, expires=Thu, 01 Jan 1970 00:00:01 GMT, samesite=lax, domain=${domain}`;
+		document.cookie = `nc_session=; expires=Thu, 01 Jan 1970 00:00:01 GMT; samesite=lax; domain=${domain}`;
 	}
 }
 
