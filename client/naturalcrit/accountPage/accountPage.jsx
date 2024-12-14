@@ -47,12 +47,13 @@ class AccountPage extends React.Component {
 			})
 			.catch((err) => {
 				console.log(err);
+				localStorage.setItem('errors', JSON.stringify(err)); // Store error in localStorage
 				this.setState({
 					processing: false,
 					errors: err,
 				});
 				return Promise.reject(err);
-			});
+			});			
 	}
 
 	render() {
