@@ -30,7 +30,7 @@ class AccountPage extends React.Component {
 			return Promise.reject('Invalid username');
 		}
 		
-		if (!prompt('This feature is a work in progres at the moment, and can only be used by developers of the project, please enter the password', 'RenameFeature')) return Promise.reject('User canceled rename');
+		if (prompt('This feature is a work in progres at the moment, and can only be used by developers of the project, please enter the password', 'password') !== "RenameFeature") return Promise.reject('User canceled rename');
 		//if (!confirm('Are you sure you want to rename your account?')) return Promise.reject('User canceled rename');
 
 		this.setState({
