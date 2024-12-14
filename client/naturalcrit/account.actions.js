@@ -75,7 +75,7 @@ const AccountActions = {
 							});
 							request
 								.put('https://homebrewery.naturalcrit.com/api/user/rename')
-								.set('Homebrewery-Version', '3.16.1')
+								//.set('Homebrewery-Version', '3.16.1') should not be necessary anymore
 								.send({ username, newUsername })
 								.end((err, res) => {
 									if (err) return reject(err);
