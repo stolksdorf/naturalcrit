@@ -74,7 +74,7 @@ const AccountActions = {
 								}, 500);
 							});
 							request
-								.put('https://homebrewery.naturalcrit.com/api/user/rename')
+								.put('https://homebrewery-pr-3942.herokuapp.com/api/user/rename')
 								.set('Homebrewery-Version', '3.16.1')
 								.send({ username, newUsername })
 								.end((err, res) => {
