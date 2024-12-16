@@ -56,6 +56,7 @@ const AccountActions = {
 				});
 		});
 	},
+
 	rename: (username, newUsername, password) => {
 		console.log('attempting rename');
 		return AccountActions.login(username, password)
@@ -75,7 +76,7 @@ const AccountActions = {
 							});
 							request
 								.put('https://homebrewery.naturalcrit.com/api/user/rename')
-								//.set('Homebrewery-Version', '3.16.1') should not be necessary anymore
+								.withCredentials() //send session cookie manually
 								.send({ username, newUsername })
 								.end((err, res) => {
 									if (err) return reject(err);
@@ -91,7 +92,7 @@ const AccountActions = {
 
 	createSession: (token) => {
 		const domain = window.domain === '.local.naturalcrit.com' ? 'localhost' : window.domain;
-		document.cookie = `nc_session=${token}; max-age=${60*60*24*365}; path=/; samesite=lax;domain=${domain}`;
+		document.cookie = `nc_session=${token}; max-age=${60 * 60 * 24 * 365}; path=/; samesite=lax;domain=${domain}`;
 	},
 
 	removeSession: () => {
