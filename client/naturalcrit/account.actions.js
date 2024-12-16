@@ -56,7 +56,7 @@ const AccountActions = {
 				});
 		});
 	},
-	
+
 	rename: (username, newUsername, password) => {
 		console.log('attempting rename');
 		return AccountActions.login(username, password)
@@ -88,11 +88,11 @@ const AccountActions = {
 			.catch((err) => {
 				return Promise.reject(err);
 			});
-	},	
+	},
 
 	createSession: (token) => {
 		const domain = window.domain === '.local.naturalcrit.com' ? 'localhost' : window.domain;
-		document.cookie = `nc_session=${token}; max-age=${60*60*24*365}; path=/; samesite=lax;domain=${domain}`;
+		document.cookie = `nc_session=${token}; max-age=${60 * 60 * 24 * 365}; path=/; samesite=lax;domain=${domain}`;
 	},
 
 	removeSession: () => {
