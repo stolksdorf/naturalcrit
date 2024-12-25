@@ -29,9 +29,7 @@ class AccountPage extends React.Component {
 			});
 			return Promise.reject('Invalid username');
 		}
-		
-		if (prompt('This feature is a work in progres at the moment, and can only be used by developers of the project, please enter the password', 'password') !== "RenameFeature") return Promise.reject('User canceled rename');
-		//if (!confirm('Are you sure you want to rename your account?')) return Promise.reject('User canceled rename');
+		if (!confirm('Are you sure you want to rename your account?')) return Promise.reject('User canceled rename');
 
 		this.setState({
 			processing: true,
@@ -80,12 +78,12 @@ class AccountPage extends React.Component {
 						Log Out
 					</button>
 					<button className="rename" onClick={this.toggleRenameForm}>
-						Change my username
+						{this.state.showRenameForm ? 'Cancel rename' : 'Change my username' }
 					</button>
 					<br />
 					<br />
 					{this.state.showRenameForm && <AuthForm actionType="rename" onSubmit={this.handleRename} />}
-					<small>Upcoming features will include account deletion and username changes.</small>
+					<small>Upcoming features will include account deletion.</small>
 				</div>
 			</div>
 		);
