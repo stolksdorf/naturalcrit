@@ -46,23 +46,18 @@ router.get('/google',
 // Google authentication redirect route
 router.get('/google/redirect',
 	passport.authenticate('google', { session: false }),
-	async (req, res, next) => {
-		try {
-			if (!req.user.username) {
-			}
-			res.cookie('nc_session', jwt, {
-			});
-			res.redirect('/success');
-		} catch (err) {
-			console.error('Error during Google redirect:', err);
-			res.status(500).send('Internal Server Error');
-		}
+	(req, res, next) => {
+		if (!req.user.username)
 			return next();	// Stay on the page if we still need local sign-in
+
 		const jwt = generateUserToken(req, res);
+		res.cookie('nc_session', jwt, {
 			maxAge   : 1000 * 60 * 60 * 24 * 365, // 1 year
 			path     : '/',
 			sameSite : 'lax',
 			domain   : '.naturalcrit.com', // Set domain for the cookie.
+		});
+		res.redirect('/success');
 	}
 );
 
