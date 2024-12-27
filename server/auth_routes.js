@@ -15,13 +15,11 @@ function generateUserToken(req, res) {
 
 // Login API
 router.post('/login', async (req, res) => {
-	try {
 		const { user, pass } = req.body;
-		const jwt = await AccountModel.login(user, pass);
-		res.json(jwt);
-	} catch (err) {
-		res.status(err.status || 500).json(err);
-	}
+		const jwt = await AccountModel.login(user, pass)
+			.catch(err => res.status(err.status || 500).json(err) );
+		if(jwt)
+			res.json(jwt);
 });
 
 // Render login page
