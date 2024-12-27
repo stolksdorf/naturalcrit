@@ -36,8 +36,7 @@ router.get('/logout', (req, res) => {
 });
 
 // Google authentication route
-router.get(
-	'/google',
+router.get('/google',
 	passport.authenticate('google', {
 		session    : false, // No session should be maintained on the server.
 		scope      : ['profile', 'https://www.googleapis.com/auth/drive.file'], // Request user profile and Google Drive file access.
@@ -47,8 +46,7 @@ router.get(
 );
 
 // Google authentication redirect route
-router.get(
-	'/google/redirect',
+router.get('/google/redirect',
 	passport.authenticate('google', { session: false }),
 	async (req, res, next) => {
 		try {
