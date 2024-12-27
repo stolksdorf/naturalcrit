@@ -8,14 +8,9 @@ const router = express.Router();
 // TODO: MERGE from ACCOUNT.API.JS then probably rename ACCOUNT.API.JS
 
 // Helper function to generate a user token
-async function generateUserToken(req, res) {
-	try {
-		const accessToken = await token.generateAccessToken(req, res);
-		return accessToken;
-	} catch (err) {
-		console.error('Error generating user token:', err);
-		throw err;
-	}
+function generateUserToken(req, res) {
+	const accessToken = token.generateAccessToken(req, res);
+	return accessToken;
 }
 
 // Login API
@@ -59,7 +54,6 @@ router.get(
 		try {
 			if (!req.user.username) {
 			}
-			const jwt = await generateUserToken(req, res);
 			res.cookie('nc_session', jwt, {
 			});
 			res.redirect('/success');
@@ -68,6 +62,7 @@ router.get(
 			res.status(500).send('Internal Server Error');
 		}
 			return next();	// Stay on the page if we still need local sign-in
+		const jwt = generateUserToken(req, res);
 			maxAge   : 1000 * 60 * 60 * 24 * 365, // 1 year
 			path     : '/',
 			sameSite : 'lax',
