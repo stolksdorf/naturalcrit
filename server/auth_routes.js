@@ -1,6 +1,6 @@
-const express = require('express');
-const passport = require('passport');
-const token = require('./token.js');
+const express      = require('express');
+const passport     = require('passport');
+const token        = require('./token.js');
 const AccountModel = require('./account.model.js').model; // Assuming this is needed for `login`.
 
 const router = express.Router();
@@ -50,10 +50,10 @@ router.get('/logout', (req, res) => {
 router.get(
 	'/google',
 	passport.authenticate('google', {
-		session: false, // No session should be maintained on the server.
-		scope: ['profile', 'https://www.googleapis.com/auth/drive.file'], // Request user profile and Google Drive file access.
-		accessType: 'offline', // Ensures refresh token is provided.
-		prompt: 'consent', // Forces user to select an account.
+		session    : false, // No session should be maintained on the server.
+		scope      : ['profile', 'https://www.googleapis.com/auth/drive.file'], // Request user profile and Google Drive file access.
+		accessType : 'offline', // Ensures refresh token is provided.
+		prompt     : 'consent', // Forces user to select an account.
 	})
 );
 
@@ -71,16 +71,16 @@ router.get(
 			const jwt = await generateUserToken(req, res);
 			console.log('About to redirect');
 			res.cookie('nc_session', jwt, {
-				maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-				path: '/',
-				sameSite: 'lax',
-				domain: '.naturalcrit.com', // Set domain for the cookie.
 			});
 			res.redirect('/success');
 		} catch (err) {
 			console.error('Error during Google redirect:', err);
 			res.status(500).send('Internal Server Error');
 		}
+			maxAge   : 1000 * 60 * 60 * 24 * 365, // 1 year
+			path     : '/',
+			sameSite : 'lax',
+			domain   : '.naturalcrit.com', // Set domain for the cookie.
 	}
 );
 
