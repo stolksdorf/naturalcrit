@@ -11,13 +11,7 @@ const router = express.Router();
 async function generateUserToken(req, res) {
 	try {
 		const accessToken = await token.generateAccessToken(req, res);
-		console.log('Successfully Generated JWT after Google Login');
-		console.log(accessToken);
 		return accessToken;
-		// Uncomment below if rendering an authenticated page instead of just returning the token.
-		// res.render('authenticated.html', {
-		//   token: accessToken
-		// });
 	} catch (err) {
 		console.error('Error generating user token:', err);
 		throw err;
@@ -63,13 +57,9 @@ router.get(
 	passport.authenticate('google', { session: false }),
 	async (req, res, next) => {
 		try {
-			// Check if there is an existing local user
 			if (!req.user.username) {
-				// Stay on the page if we still need local sign-in
-				return next();
 			}
 			const jwt = await generateUserToken(req, res);
-			console.log('About to redirect');
 			res.cookie('nc_session', jwt, {
 			});
 			res.redirect('/success');
@@ -77,6 +67,7 @@ router.get(
 			console.error('Error during Google redirect:', err);
 			res.status(500).send('Internal Server Error');
 		}
+			return next();	// Stay on the page if we still need local sign-in
 			maxAge   : 1000 * 60 * 60 * 24 * 365, // 1 year
 			path     : '/',
 			sameSite : 'lax',
